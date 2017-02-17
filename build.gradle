@@ -1,0 +1,31 @@
+defaultTasks 'build'
+
+apply plugin: 'com.github.ben-manes.versions'
+
+subprojects {
+    if (it.name != 'server') {
+        // Investigate why the java plugin is needed :/
+        apply plugin: 'java'
+        apply plugin: 'ca.cutterslade.analyze'
+    }
+    apply from: "$rootProject.projectDir/dependencies.gradle"
+    repositories {
+        jcenter()
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:all" << "-Werror"
+        }
+    }
+}
+
+buildscript {
+    apply from: "$rootProject.projectDir/dependencies.gradle"
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.gradleVersionsPluginVersion"
+        classpath "ca.cutterslade.gradle:gradle-dependency-analyze:$rootProject.gradleDependencyAnalyzePluginVersion"
+    }
+}

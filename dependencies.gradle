@@ -1,0 +1,13 @@
+ext {
+    // compile dependencies
+    kotlinVersion = '1.0.6'
+
+    // test dependencies
+    junitVersion = '4.12'
+    assertjVersion = '3.6.2'
+    mockitoVersion = '2.2.22'
+
+    // plugins
+    gradleVersionsPluginVersion = '0.14.0'
+    gradleDependencyAnalyzePluginVersion = '1.1.0'
+}
