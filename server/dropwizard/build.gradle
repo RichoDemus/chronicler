@@ -1,0 +1,29 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
+
+    compile 'io.dropwizard:dropwizard-core:1.0.6'
+    compile 'io.dropwizard:dropwizard-assets:1.0.6'
+    compile 'io.dropwizard.metrics:metrics-healthchecks:3.1.2'
+
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+
+    compile 'ru.vyarus:dropwizard-guicey:4.0.1'
+
+    compile 'com.google.inject:guice:4.1.0'
+    compile 'com.richodemus.scanner:guice-classpath-scanner:1.0.0'
+
+    testCompile "junit:junit:$rootProject.junitVersion"
+    testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.kotlinVersion"
+    }
+}
