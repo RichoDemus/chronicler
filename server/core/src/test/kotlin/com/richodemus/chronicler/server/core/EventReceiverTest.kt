@@ -45,7 +45,7 @@ class EventReceiverTest {
         assertThat(target.events.map { it.version.version }).isEqualTo(target.events.map { it.version.version }.sortedBy { it })
         val arrayList = ArrayList(target.events)
         arrayList.forEachIndexed { i, event ->
-            if(arrayList.last() == arrayList[i]){
+            if (arrayList.last() == arrayList[i]) {
                 return@forEachIndexed
             }
             if (i.mod(1000) == 0) {

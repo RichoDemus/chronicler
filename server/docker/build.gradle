@@ -1,0 +1,29 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+apply plugin: 'java'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+task copyDependencies(type: Copy) {
+    from configurations.compile
+    into 'build/dependencies'
+}
+
+task buildImage(type: DockerBuildImage, dependsOn: copyDependencies) {
+    dockerFile = file('./Dockerfile')
+    inputDir = file('.')
+    tag = 'richodemus/chronicler:latest'
+}
+
+dependencies {
+    compile project(':server:dropwizard')
+    permitUnusedDeclared project(':server:dropwizard')
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-docker-plugin:3.0.5'
+    }
+}

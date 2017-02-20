@@ -3,7 +3,7 @@ package com.richodemus.chronicler.server.core
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class VersionTest{
+class VersionTest {
     @Test
     fun `Any should equal any version`() {
         assertThat(AnyVersion()).isEqualTo(AnyVersion())

@@ -19,12 +19,11 @@ class TestClient(val threads: Int, val events: Int, val receiver: EventReceiver)
                         break
                     }
                     var sent = false
-                    while(!sent){
+                    while (!sent) {
                         try {
                             receiver.consume(receiver.getVersion(), Event(id.toString()))
                             sent = true
-                        }
-                        catch (e:IllegalStateException){
+                        } catch (e: IllegalStateException) {
                         }
                     }
                 }

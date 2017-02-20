@@ -15,7 +15,7 @@ class ChroniclerApplication : Application<ChroniclerConfiguration>() {
     override fun initialize(bootstrap: Bootstrap<ChroniclerConfiguration>) {
         bootstrap.addBundle(GuiceBundle.builder<ChroniclerConfiguration>()
                 .enableAutoConfig("com.richodemus.chronicler.server.dropwizard")
-                .modules(ClassPathScanningModule("com.richodemus.chronicler"))
+                .modules(ClassPathScanningModule("com.richodemus.chronicler.server.dropwizard"))
                 .build())
         bootstrap.addBundle(AssetsBundle("/webroot/", "/", "index.html", "static"))
     }
