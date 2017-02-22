@@ -5,7 +5,10 @@ import io.dropwizard.Application
 import io.dropwizard.assets.AssetsBundle
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
+import io.federecio.dropwizard.swagger.SwaggerBundle
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration
 import ru.vyarus.dropwizard.guice.GuiceBundle
+
 
 class ChroniclerApplication : Application<ChroniclerConfiguration>() {
     companion object {
@@ -18,6 +21,11 @@ class ChroniclerApplication : Application<ChroniclerConfiguration>() {
                 .modules(ClassPathScanningModule("com.richodemus.chronicler.server.dropwizard"))
                 .build())
         bootstrap.addBundle(AssetsBundle("/webroot/", "/", "index.html", "static"))
+        bootstrap.addBundle(object : SwaggerBundle<ChroniclerConfiguration>() {
+            override fun getSwaggerBundleConfiguration(configuration: ChroniclerConfiguration): SwaggerBundleConfiguration {
+                return configuration.swaggerBundleConfiguration
+            }
+        })
     }
 
     override fun run(configuration: ChroniclerConfiguration, environment: Environment) {

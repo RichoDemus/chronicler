@@ -8,3 +8,6 @@ server:
     port: 8081
   requestLog:
     appenders: []
+
+swagger:
+  resourcePackage: com.richodemus.chronicler.server.api.api
