@@ -2,9 +2,8 @@ apply plugin: 'kotlin'
 
 dependencies {
     compile project (':server:core')
-    compile (project (':server:swagger')) {
-        exclude group: 'com.sun.jersey', module: 'jersey-core'
-    }
+    compile project (':server:swagger')
+
     compile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
 
@@ -15,8 +14,8 @@ dependencies {
 
     compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
 
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.8'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.4'
+    compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
 
     compile 'javax.inject:javax.inject:1'
     compile 'com.google.inject:guice:4.1.0'
