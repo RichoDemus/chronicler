@@ -1,0 +1,38 @@
+swagger: '2.0'
+info:
+  title: Chronicler API
+  # description: Events something
+  version: "1.0.0"
+# the domain of the service
+host: localhost:8080
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api/v1/
+produces:
+  - application/json
+paths:
+  /event-types:
+    get:
+      summary: List all event types
+      description: |
+        Returns a list of all existing event types
+      responses:
+        200:
+          description: An array of event types
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventType'
+
+definitions:
+  EventType:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier for this event type, usually the name of the event type
+      version:
+        type: number
+        description: The current version of this event type

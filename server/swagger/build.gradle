@@ -1,0 +1,31 @@
+plugins {
+    id 'org.detoeuf.swagger-codegen' version '1.6.3'
+    id 'java'
+}
+
+swagger {
+    inputSpec = 'server/swagger/src/main/resources/api-specification.yaml'
+
+    output  = 'src/generated'
+    language  = 'jaxrs-spec'
+
+    additionalProperties = [
+            'invokerPackage'   : 'com.richodemus.chronicler.server.api',
+            'modelPackage'     : 'com.richodemus.chronicler.server.api.model',
+            'apiPackage'       : 'com.richodemus.chronicler.server.api.api',
+            'dateLibrary'      : 'java8'
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/generated/src/main/java'
+        }
+    }
+}
+
+dependencies {
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+    compile 'io.swagger:swagger-annotations:1.5.12'
+}
