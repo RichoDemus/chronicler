@@ -1,11 +1,10 @@
 package com.richodemus.chronicler.server.core
 
-import java.util.*
 
-class EventReceiver {
-    val events: MutableList<EventHolder> = LinkedList()
+class Chronicle {
+    private val events: MutableList<EventHolder> = mutableListOf()
 
-    fun consume(expectedVersion: Version, event: Event) {
+    fun addEvent(expectedVersion: Version, event: Event) {
         synchronized(events) {
             if (events.isEmpty()) {
                 events.add(EventHolder(NumericalVersion(1), event))
@@ -22,6 +21,8 @@ class EventReceiver {
     }
 
     fun getVersion() = events.lastOrNull()?.version ?: NumericalVersion(0)
+
+    fun getEvents() = events //todo return immutable copy
 
     data class EventHolder(val version: NumericalVersion, val event: Event)
 }

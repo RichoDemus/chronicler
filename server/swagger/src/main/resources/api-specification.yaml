@@ -13,26 +13,31 @@ basePath: /api/v1/
 produces:
   - application/json
 paths:
-  /event-types:
+  /events:
     get:
-      summary: List all event types
-      description: |
-        Returns a list of all existing event types
+      summary: Get all events
       responses:
         200:
-          description: An array of event types
+         description: A list of all events in the given Chronicle
+         schema:
+           type: array
+           items:
+             $ref: '#/definitions/Event'
+    post:
+      summary: Post a new event
+      responses:
+        200:
+          description: OK
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/EventType'
+            $ref: '#/definitions/Event'
 
 definitions:
-  EventType:
+  Event:
     type: object
     properties:
       id:
         type: string
-        description: Unique identifier for this event type, usually the name of the event type
-      version:
+        description: yadda yadda id
+      page:
         type: number
-        description: The current version of this event type
+        description: Which page in the Chronicle this event has

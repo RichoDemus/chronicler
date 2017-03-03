@@ -5,7 +5,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
 
-class TestClient(val threads: Int, val events: Int, val receiver: EventReceiver) {
+class TestClient(val threads: Int, val events: Int, val type: Chronicle) {
     val executorService: ExecutorService = Executors.newFixedThreadPool(threads)
     val counter = AtomicLong()
 
@@ -21,7 +21,7 @@ class TestClient(val threads: Int, val events: Int, val receiver: EventReceiver)
                     var sent = false
                     while (!sent) {
                         try {
-                            receiver.consume(receiver.getVersion(), Event(id.toString()))
+                            type.addEvent(type.getVersion(), Event(id.toString()))
                             sent = true
                         } catch (e: IllegalStateException) {
                         }

@@ -4,46 +4,46 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.util.*
 
-class EventReceiverTest {
+class ChronicleTest {
     @Test
     fun `Add one million events using AnyVersion`() {
         val oneMillion = 1000000
-        val target = EventReceiver()
+        val target = Chronicle()
 
         IntRange(1, oneMillion).forEach {
-            target.consume(AnyVersion(), Event(it.toString()))
+            target.addEvent(AnyVersion(), Event(it.toString()))
         }
 
-        assertThat(target.events).hasSize(oneMillion)
-        assertThat(target.events).isEqualTo(target.events.sortedBy { it.event.id.toInt() })
+        assertThat(target.getEvents()).hasSize(oneMillion)
+        assertThat(target.getEvents()).isEqualTo(target.getEvents().sortedBy { it.event.id.toInt() })
     }
 
     @Test
     fun `Add one million events using NumericalVersion`() {
         val oneMillion = 1000000
-        val target = EventReceiver()
+        val target = Chronicle()
 
         IntRange(0, oneMillion - 1).forEach {
-            target.consume(NumericalVersion(it.toLong()), Event(it.toString()))
+            target.addEvent(NumericalVersion(it.toLong()), Event(it.toString()))
         }
 
-        assertThat(target.events).hasSize(oneMillion)
-        assertThat(target.events).isEqualTo(target.events.sortedBy { it.event.id.toInt() })
+        assertThat(target.getEvents()).hasSize(oneMillion)
+        assertThat(target.getEvents()).isEqualTo(target.getEvents().sortedBy { it.event.id.toInt() })
     }
 
     @Test
     fun `Add one million events from multiple threads`() {
         val oneMillion = 1000000
-        val target = EventReceiver()
+        val target = Chronicle()
 
         val testClient = TestClient(10, oneMillion, target)
         testClient.start()
         println("Running")
         testClient.await()
         println("Done, asserting")
-        assertThat(target.events.size).isGreaterThanOrEqualTo(oneMillion)
-        assertThat(target.events.map { it.version.version }).isEqualTo(target.events.map { it.version.version }.sortedBy { it })
-        val arrayList = ArrayList(target.events)
+        assertThat(target.getEvents().size).isGreaterThanOrEqualTo(oneMillion)
+        assertThat(target.getEvents().map { it.version.version }).isEqualTo(target.getEvents().map { it.version.version }.sortedBy { it })
+        val arrayList = ArrayList(target.getEvents())
         arrayList.forEachIndexed { i, event ->
             if (arrayList.last() == arrayList[i]) {
                 return@forEachIndexed
