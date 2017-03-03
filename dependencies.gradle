@@ -1,7 +1,8 @@
 ext {
     // compile dependencies
-    kotlinVersion = '1.0.6'
+    kotlinVersion = '1.1.0'
     jacksonVersion = '2.8.7'
+    jetbrainsAnnotationsVersion = '13.0'
 
     // test dependencies
     junitVersion = '4.12'
