@@ -2,7 +2,7 @@ ext {
     // compile dependencies
     kotlinVersion = '1.1.0'
     jacksonVersion = '2.8.7'
-    jetbrainsAnnotationsVersion = '13.0'
+    jetbrainsAnnotationsVersion = '15.0'
 
     // test dependencies
     junitVersion = '4.12'
@@ -13,3 +13,4 @@ ext {
     gradleVersionsPluginVersion = '0.14.0'
     gradleDependencyAnalyzePluginVersion = '1.1.0'
 }
+
