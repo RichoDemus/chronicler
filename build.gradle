@@ -3,7 +3,7 @@ defaultTasks 'build'
 apply plugin: 'com.github.ben-manes.versions'
 
 subprojects {
-    if (!(it.name in ['server'])) {
+    if (!(it.name in ['server','test'])) {
         // Investigate why the java plugin is needed :/
         apply plugin: 'java'
         apply plugin: 'ca.cutterslade.analyze'

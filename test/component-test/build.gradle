@@ -1,0 +1,51 @@
+apply plugin: 'kotlin'
+
+analyzeTestClassesDependencies.enabled = false
+
+dependencies {
+    testCompile project (':server:dropwizard')
+
+    testCompile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
+    //compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
+
+    testCompile 'io.dropwizard:dropwizard-testing:1.0.6'
+    testCompile 'io.rest-assured:rest-assured:3.0.2'
+
+
+    testCompile "junit:junit:$rootProject.junitVersion"
+    testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.kotlinVersion"
+    }
+}
+
+sourceSets {
+    // Note that just declaring this sourceset creates two configurations.
+    componentTest {
+        kotlin {
+            srcDir 'src/component-test/kotlin'
+        }
+        resources {
+            srcDir 'src/component-test/resources'
+        }
+        //compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+configurations {
+    componentTestCompile.extendsFrom testCompile
+    componentTestRuntime.extendsFrom testRuntime
+}
+
+task componentTest(type: Test, dependsOn: build) {
+    description = "Runs component tests (located in src/component-test/...)."
+    testClassesDir = project.sourceSets.componentTest.output.classesDir
+    classpath = project.sourceSets.componentTest.runtimeClasspath
+}
