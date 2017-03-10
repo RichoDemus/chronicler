@@ -7,7 +7,7 @@ ext {
     // test dependencies
     junitVersion = '4.12'
     assertjVersion = '3.6.2'
-    mockitoVersion = '2.7.11'
+    mockitoVersion = '2.7.16'
 
     // plugins
     gradleVersionsPluginVersion = '0.14.0'
