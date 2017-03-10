@@ -18,7 +18,7 @@ class EventResourceTest {
         //language=JSON
         val expected = "[{\"id\":\"hej-id\",\"page\":null}]"
 
-        val result = EventResource(mock).eventsGet().entity.toString()
+        val result = EventResource(mock).eventsGet(mutableListOf<String>()).entity.toString()
 
         assertThat(result).isEqualTo(expected)
     }

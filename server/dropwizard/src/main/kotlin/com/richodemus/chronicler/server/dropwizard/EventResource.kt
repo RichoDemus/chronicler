@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.ws.rs.core.Response
 
 class EventResource @Inject constructor(val eventConsumer: Chronicle) : EventsApi() {
-    override fun eventsGet(): Response {
+    override fun eventsGet(ids: MutableList<String>?): Response {
 
         val events = eventConsumer.getEvents().map { Event().apply { id = "hej-id" } }
 
@@ -17,6 +17,18 @@ class EventResource @Inject constructor(val eventConsumer: Chronicle) : EventsAp
         val string = ObjectMapper().writeValueAsString(events)
 
         return string.let { Response.ok(it).build() }
+    }
+
+    override fun eventsPageGet(page: Long?): Response {
+        return super.eventsPageGet(page)
+    }
+
+    override fun eventsPagePut(page: Long?, body: Event?): Response {
+        return super.eventsPagePut(page, body)
+    }
+
+    override fun eventsPost(): Response {
+        return super.eventsPost()
     }
 
     private fun Long.toBigDecimal() = BigDecimal.valueOf(this)

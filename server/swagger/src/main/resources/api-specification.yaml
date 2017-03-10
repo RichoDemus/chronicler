@@ -7,15 +7,26 @@ info:
 host: localhost:8080
 # array of all schemes that your API supports
 schemes:
-  - https
+  - http
 # will be prefixed to all paths
-basePath: /api/v1/
+basePath: /api/v1
 produces:
+  - application/json
+consumes:
   - application/json
 paths:
   /events:
     get:
       summary: Get all events
+      parameters:
+        - in: query
+          name: id
+          description: only events with the given ids
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
       responses:
         200:
          description: A list of all events in the given Chronicle
@@ -24,16 +35,56 @@ paths:
            items:
              $ref: '#/definitions/Event'
     post:
-      summary: Post a new event
+      summary: Post a new event without which page
       responses:
         200:
           description: OK
           schema:
             $ref: '#/definitions/Event'
 
+  /events/{page}/:
+    get:
+      summary: Get a specific event
+      parameters:
+        - in: path
+          name: page
+          description: Chronicle page to insert the event at
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Event'
+    put:
+      summary: Add a new event at a specific place in the order
+      parameters:
+        - in: path
+          name: page
+          description: Chronicle page to insert the event at
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: body
+          description: Event to add
+          required: true
+          schema:
+            $ref: "#/definitions/Event"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Event'
+        400:
+          description: Invalid page or something
+
 definitions:
   Event:
     type: object
+    required:
+      - id
     properties:
       id:
         type: string
