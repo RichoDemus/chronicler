@@ -16,7 +16,7 @@ class EventResourceTest {
             on { getEvents() } doReturn events
         }
         //language=JSON
-        val expected = "[{\"id\":\"hej-id\",\"page\":null}]"
+        val expected = "[{\"id\":\"hello\",\"page\":null}]"
 
         val result = EventResource(mock).eventsGet(mutableListOf<String>()).entity.toString()
 

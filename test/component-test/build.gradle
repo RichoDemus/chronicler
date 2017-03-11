@@ -4,14 +4,13 @@ analyzeTestClassesDependencies.enabled = false
 
 dependencies {
     testCompile project (':server:dropwizard')
+    testCompile project (':server:swagger')
 
     testCompile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
-    //compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
 
     testCompile 'io.dropwizard:dropwizard-testing:1.0.6'
     testCompile 'io.rest-assured:rest-assured:3.0.2'
-
 
     testCompile "junit:junit:$rootProject.junitVersion"
     testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"

@@ -36,6 +36,13 @@ paths:
              $ref: '#/definitions/Event'
     post:
       summary: Post a new event without which page
+      parameters:
+        - in: body
+          name: body
+          description: Event to add
+          required: true
+          schema:
+            $ref: "#/definitions/Event"
       responses:
         200:
           description: OK
