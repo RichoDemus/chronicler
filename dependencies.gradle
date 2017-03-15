@@ -13,4 +13,3 @@ ext {
     gradleVersionsPluginVersion = '0.14.0'
     gradleDependencyAnalyzePluginVersion = '1.1.0'
 }
-
