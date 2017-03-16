@@ -1,3 +1,8 @@
+sudo: required
+
+services:
+  - docker
+
 language: java
 jdk:
   - oraclejdk8
@@ -9,3 +14,18 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+
+env:
+  global:
+    - secure: "RIv3ioFX/emq6vieOI7c3XAevqf0uZ6hYQL5ZbsUUticYPasZokJxBFC6LvK6TR5HXfx3EuZfa3eK5SWTfIvu++o7xrvVyad9OSb8OJrZdQFerOrBOINWB2JKBUff/MEckD1M1Zs6Qrf7pIXIF85jH+GBnOV3h30sayDaETpjhM3zENuC4xzBU9OdbUTZ8LGAA1Kpy3GRJAc8VpGzNv1OBeyHc1NOtCk+BSrElHliGJuFZqZxg3zguGbF+02R+Fohk3nOaPf0J0OocBCjyWbqJ/nyaRkg6mlztiEdO9nMYh57o31iwGGT3DEuvanU9Gqqs5CBABfDzsKF44S22qU9Zt5tgK/Vvb5UzRzE9tI8TqdZqsYCZ6p7/FdS2mdzArUrSsJ86+0KnBg1x15wmyXjIzQMnZUdMrqcz99VHQVHuIwWEAijKls6GLAAKVTQwWe3j9Ml6sJzD7i+EnxjyF3Y1CwEbTvTbMC9+7QEyHG0NxGM504WG/AGyPvqY399gzy/N3lovzJ+nYHnO0q39DpryggUMYPWIal0VMmMiJksiBjPGTG5F4ZYx0uV+e1XFVnmjxPGXe4mnr/5cYVCbhWfDEsNZgRuvy+NLUZA+CWycew+izYBVfTkD1bWnGFlwty7IiUXpqpJLxRT219B/u0c3EqbpH5QCxGWoUS5uOjIvs=" # DOCKER_USER
+    - secure: "RwyEhJEcP2PDIeHkm+dCdQiPOPq5uryjY3gX1g0MnkkUxUq7Pef8xVHesSHKZaXT7StJCZxY4ME6TeBV8qNNoTBe1AGVss+h+KAmdOy+CrVxzZ+YtNehojJcYVsqRO56GvOSb2LVG6Mqu4GtaU7tvH/C0EsKeTugJQqR7Avel1NBDlXljhEcU71DxBAj5Qh5/cqs8ycwBlY5AVGeeLNqIDr+rzAQVYRe3S+Juwu2UTSFXNFdHKyITlmQMf5SZo1Nzh69gGQOXkSPcXZdf75ssfdYSLRnfQW3YiJUZnU8od6pdmjHFbB90dn0qdre4nEKGLDqO8tMIgTo2X4qJZUr67+8CHghyZpDWVTyS2aYxpOiTABTvnD+ffZBU0VqQxgDzG5x4iqY/5j+nnrANiPOjxfWrl6WZERbHeq7Vcbc7elq/1GS8j8sAItsIZZdoxhBUKGKpQXOVBTCM5XgKPW8qU6lcx8wYBSw56Zc7pbzfopR5jP7w7RrTrDa0nCjMi0KtbEmsme5+EKZXD7UCDKMeImhYXBx4PYqWxVFaPIFseprcCVSgup3+4S7PcUZOaKeSdWQB4Q8UfVYtUO+Nuj28xwkTNq4RXBLgSbItZgvkdxXo6VIXEYzTOkz2kNTtFjdHOgFckLRTD7P3Z2eKHdXTJXwA9bDVl/OiMLTSlf6TzA=" # DOCKER_PASS
+    - COMMIT=${TRAVIS_COMMIT::8}
+
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=richodemus/chronicler
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - ./gradlew buildImage -Ptag=$COMMIT
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - test $TRAVIS_BRANCH = "master" && docker push $REPO
