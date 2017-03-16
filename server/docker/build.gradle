@@ -9,9 +9,11 @@ task copyDependencies(type: Copy) {
 }
 
 task buildImage(type: DockerBuildImage, dependsOn: copyDependencies) {
+    description = "Build Docker Image, use -Ptag=X to tag with X instead of latest"
     dockerFile = file('./Dockerfile')
     inputDir = file('.')
-    tag = 'richodemus/chronicler:latest'
+    def customTag = project.hasProperty('tag') ? project.tag : 'latest'
+    tag = "richodemus/chronicler:${customTag}"
 }
 
 dependencies {
