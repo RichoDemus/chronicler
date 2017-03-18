@@ -1,5 +1,7 @@
 server:
   rootPath: '/api/*'
+  gzip:
+    enabled: false
   applicationConnectors:
   - type: http
     port: 8080

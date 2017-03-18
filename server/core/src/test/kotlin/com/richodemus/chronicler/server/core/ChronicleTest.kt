@@ -1,5 +1,6 @@
 package com.richodemus.chronicler.server.core
 
+import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
@@ -8,21 +9,23 @@ internal class ChronicleTest {
     private val id = "uuid"
     private val data = "interesting data"
 
+    private val mock = mock<EventCreationListener> {}
+
     @Test
     fun `New Chronicle should be empty`() {
-        val result = Chronicle().getEvents()
+        val result = Chronicle(mock).getEvents()
         assertThat(result).hasSize(0)
     }
 
     @Test
     fun `New Chronicle should be at page zero`() {
-        val result = Chronicle().page
+        val result = Chronicle(mock).page
         assertThat(result).isEqualTo(0L)
     }
 
     @Test
     fun `A Chronicle with one event should return one event`() {
-        val target = Chronicle()
+        val target = Chronicle(mock)
         target.addEvent(Event(id, 1L, ""))
 
         assertThat(target.getEvents()).hasSize(1)
@@ -30,7 +33,7 @@ internal class ChronicleTest {
 
     @Test
     fun `A Chronicle with one event should be at page one`() {
-        val target = Chronicle()
+        val target = Chronicle(mock)
         target.addEvent(Event(id, 1L, ""))
 
         assertThat(target.page).isEqualTo(1L)
@@ -38,7 +41,7 @@ internal class ChronicleTest {
 
     @Test
     fun `Add pageless Event to empty Chronicle`() {
-        val target = Chronicle()
+        val target = Chronicle(mock)
 
         target.addEvent(Event(id, null, data))
 
@@ -50,7 +53,7 @@ internal class ChronicleTest {
 
     @Test
     fun `Add Event to first page of empty Chronicle`() {
-        val target = Chronicle()
+        val target = Chronicle(mock)
 
         target.addEvent(Event(id, 1L, data))
 
@@ -62,13 +65,13 @@ internal class ChronicleTest {
 
     @Test
     fun `Adding event at the wrong page should throw exception`() {
-        val target = Chronicle()
+        val target = Chronicle(mock)
         assertThatThrownBy { target.addEvent(Event(id, 2L, "")) }.isInstanceOf(WrongPageException::class.java)
     }
 
     @Test
     fun `Should not insert duplicate Event`() {
-        val target = Chronicle()
+        val target = Chronicle(mock)
 
         target.addEvent(Event(id, null, "original data"))
         target.addEvent(Event(id, null, "second data"))
