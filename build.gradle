@@ -1,4 +1,4 @@
-defaultTasks 'build'
+defaultTasks 'check'
 
 apply plugin: 'com.github.ben-manes.versions'
 
