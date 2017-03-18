@@ -13,5 +13,5 @@ internal class InprocessChronicleApplication {
 
     fun start() = support.before()
     fun stop() = support.after()
-    fun  port() = support.localPort
+    fun port() = support.localPort
 }

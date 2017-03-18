@@ -25,4 +25,14 @@ internal class TestClient(port: Int) {
                 .`when`().post("$baseUrl/api/events")
                 .then().extract().statusCode()
     }
+
+    fun addEvent(event: Event, page: Int): Int {
+        return RestAssured
+                .given().contentType("application/json").config(RestAssured.config()
+                .encoderConfig(encoderConfig()
+                        .encodeContentTypeAs("application/json", ContentType.TEXT)))
+                .body(event)
+                .`when`().put("$baseUrl/api/events/$page")
+                .then().extract().statusCode()
+    }
 }

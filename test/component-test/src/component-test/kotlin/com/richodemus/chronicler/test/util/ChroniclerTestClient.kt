@@ -14,7 +14,7 @@ internal class ChroniclerTestClient {
             .`when`().get(baseUrl)
             .then().extract().statusCode()
 
-    fun  swaggerPage() = RestAssured
+    fun swaggerPage() = RestAssured
             .given()
             .`when`().get(baseUrl)
             .then().extract().body().asString()

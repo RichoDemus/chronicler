@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import java.math.BigDecimal
 
 internal class BasicTests {
     private var server: InprocessChronicleApplication? = null
@@ -38,8 +39,32 @@ internal class BasicTests {
         val statusCode = target!!.addEvent(event)
         assertThat(statusCode).isEqualTo(200)
 
-        val result = target!!.getAllEvents()
+        val results = target!!.getAllEvents()
 
-        assertThat(result).extracting { it.id }.containsOnly("my-cool-id")
+        assertThat(results).hasSize(1)
+        val result = results[0]
+
+        assertThat(result.id).isEqualTo("my-cool-id")
+        assertThat(result.page).isEqualTo(1L.toBigDecimal())
     }
+
+    @Test
+    fun `Add event at specific page`() {
+        val event = Event().apply {
+            id = "my-cool-id"
+        }
+        val statusCode = target!!.addEvent(event, 1)
+        assertThat(statusCode).isEqualTo(200)
+
+        val results = target!!.getAllEvents()
+
+        assertThat(results).hasSize(1)
+        val result = results[0]
+
+        assertThat(result.id).isEqualTo("my-cool-id")
+        assertThat(result.page).isEqualTo(1L.toBigDecimal())
+    }
+
+    private fun Long.toBigDecimal() = BigDecimal.valueOf(this)
 }
+

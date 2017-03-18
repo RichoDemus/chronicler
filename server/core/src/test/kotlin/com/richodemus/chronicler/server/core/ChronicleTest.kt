@@ -2,57 +2,46 @@ package com.richodemus.chronicler.server.core
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.*
 
-class ChronicleTest {
+internal class ChronicleTest {
+    private val id = "uuid"
+
     @Test
-    fun `Add one million events using AnyVersion`() {
-        val oneMillion = 1000000
-        val target = Chronicle()
-
-        IntRange(1, oneMillion).forEach {
-            target.addEvent(AnyVersion(), Event(it.toString()))
-        }
-
-        assertThat(target.getEvents()).hasSize(oneMillion)
-        assertThat(target.getEvents()).isEqualTo(target.getEvents().sortedBy { it.event.id.toInt() })
+    fun `New Chronicle should be empty`() {
+        val result = Chronicle().getEvents()
+        assertThat(result).hasSize(0)
     }
 
     @Test
-    fun `Add one million events using NumericalVersion`() {
-        val oneMillion = 1000000
-        val target = Chronicle()
-
-        IntRange(0, oneMillion - 1).forEach {
-            target.addEvent(NumericalVersion(it.toLong()), Event(it.toString()))
-        }
-
-        assertThat(target.getEvents()).hasSize(oneMillion)
-        assertThat(target.getEvents()).isEqualTo(target.getEvents().sortedBy { it.event.id.toInt() })
+    fun `New Chronicle should be at page zero`() {
+        val result = Chronicle().page
+        assertThat(result).isEqualTo(0L)
     }
 
     @Test
-    fun `Add one million events from multiple threads`() {
-        val oneMillion = 1000000
+    fun `A Chronicle with one event should return one event`() {
+        val target = Chronicle()
+        target.addEvent(Event(id, 1L))
+
+        assertThat(target.getEvents()).hasSize(1)
+    }
+
+    @Test
+    fun `A Chronicle with one event should be at page one`() {
+        val target = Chronicle()
+        target.addEvent(Event(id, 1L))
+
+        assertThat(target.page).isEqualTo(1L)
+    }
+
+    @Test
+    fun `Add pageless Event to empty Chronicle`() {
         val target = Chronicle()
 
-        val testClient = TestClient(10, oneMillion, target)
-        testClient.start()
-        println("Running")
-        testClient.await()
-        println("Done, asserting")
-        assertThat(target.getEvents().size).isGreaterThanOrEqualTo(oneMillion)
-        assertThat(target.getEvents().map { it.version.version }).isEqualTo(target.getEvents().map { it.version.version }.sortedBy { it })
-        val arrayList = ArrayList(target.getEvents())
-        arrayList.forEachIndexed { i, event ->
-            if (arrayList.last() == arrayList[i]) {
-                return@forEachIndexed
-            }
-            if (i.mod(1000) == 0) {
-                println("Comparing event #$i ${arrayList[i]} to next one ${arrayList[i + 1]}")
-            }
-            val nextMinusOne = arrayList[i + 1].version.version - 1
-            assertThat(event.version.version).withFailMessage("Comparing event #$i ${arrayList[i]} to next one ${arrayList[i + 1]}").isEqualTo(nextMinusOne)
-        }
+        target.addEvent(Event(id, null))
+
+        val result = target.getEvents()[0]
+        assertThat(result.id).isEqualTo(id)
+        assertThat(result.page).isEqualTo(1L)
     }
 }

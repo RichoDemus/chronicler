@@ -2,27 +2,25 @@ package com.richodemus.chronicler.server.core
 
 
 class Chronicle {
-    private val events: MutableList<EventHolder> = mutableListOf()
+    private val events: MutableList<Event> = mutableListOf()
+    internal val page: Long
+        get() = events.lastOrNull()?.page ?: 0L
 
-    fun addEvent(expectedVersion: Version, event: Event) {
+    fun addEvent(event: Event) {
         synchronized(events) {
-            if (events.isEmpty()) {
-                events.add(EventHolder(NumericalVersion(1), event))
-                return
+            val nextPage = calculateNextPage()
+
+            if (event.page != null) {
+                if (event.page != nextPage) {
+                    throw WrongPageException("Wrong page: ${event.page} for event ${event.id}, correct new page is $nextPage")
+                }
             }
 
-            val currentVersion = events.last().version
-            if (expectedVersion == currentVersion) {
-                events.add(EventHolder(currentVersion.next(), event))
-                return
-            }
-            throw IllegalStateException("Wrong version $expectedVersion, current version is $currentVersion")
+            events.add(event.copy(page = nextPage))
         }
     }
 
-    fun getVersion() = events.lastOrNull()?.version ?: NumericalVersion(0)
+    private fun calculateNextPage() = page + 1L
 
     fun getEvents() = events //todo return immutable copy
-
-    data class EventHolder(val version: NumericalVersion, val event: Event)
 }
