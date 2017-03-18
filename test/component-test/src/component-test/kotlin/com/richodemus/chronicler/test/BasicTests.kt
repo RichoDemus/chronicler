@@ -76,6 +76,20 @@ internal class BasicTests {
         assertThat(statusCode).isEqualTo(400)
     }
 
+    @Test
+    fun `Should not insert duplicate events`() {
+        val event = Event().apply {
+            id = ID
+        }
+        var statusCode = target!!.addEvent(event)
+        assertThat(statusCode).isEqualTo(200)
+        statusCode = target!!.addEvent(event)
+        assertThat(statusCode).isEqualTo(200)
+
+        val results = target!!.getAllEvents()
+        assertThat(results).hasSize(1)
+    }
+
     private fun Long.toBigDecimal() = BigDecimal.valueOf(this)
 }
 

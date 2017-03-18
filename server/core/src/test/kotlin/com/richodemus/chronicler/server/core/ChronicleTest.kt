@@ -52,4 +52,16 @@ internal class ChronicleTest {
 
         assertThatThrownBy { target.addEvent(Event(id, 2L)) }.isInstanceOf(WrongPageException::class.java)
     }
+
+    @Test
+    fun `Should not insert duplicate Event`() {
+        val target = Chronicle()
+
+        target.addEvent(Event(id, null))
+        target.addEvent(Event(id, null))
+
+        val result = target.getEvents()
+
+        assertThat(result).hasSize(1)
+    }
 }
