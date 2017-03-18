@@ -22,5 +22,5 @@ class Chronicle {
 
     private fun calculateNextPage() = page + 1L
 
-    fun getEvents() = events //todo return immutable copy
+    fun getEvents() = events.toList()
 }

@@ -20,7 +20,7 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
     }
 
     override fun eventsPageGet(page: Long?): Response {
-        return super.eventsPageGet(page)
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build()
     }
 
     /**

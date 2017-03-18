@@ -1,6 +1,7 @@
 package com.richodemus.chronicler.server.core
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 
 internal class ChronicleTest {
@@ -43,5 +44,12 @@ internal class ChronicleTest {
         val result = target.getEvents()[0]
         assertThat(result.id).isEqualTo(id)
         assertThat(result.page).isEqualTo(1L)
+    }
+
+    @Test
+    fun `Adding event at the wrong page should throw exception`() {
+        val target = Chronicle()
+
+        assertThatThrownBy { target.addEvent(Event(id, 2L)) }.isInstanceOf(WrongPageException::class.java)
     }
 }

@@ -10,6 +10,8 @@ import org.junit.Test
 import java.math.BigDecimal
 
 internal class BasicTests {
+    private val ID = "uuid"
+
     private var server: InprocessChronicleApplication? = null
     private var target: TestClient? = null
 
@@ -34,7 +36,7 @@ internal class BasicTests {
     @Test
     fun `Add event without specific page`() {
         val event = Event().apply {
-            id = "my-cool-id"
+            id = ID
         }
         val statusCode = target!!.addEvent(event)
         assertThat(statusCode).isEqualTo(200)
@@ -44,14 +46,14 @@ internal class BasicTests {
         assertThat(results).hasSize(1)
         val result = results[0]
 
-        assertThat(result.id).isEqualTo("my-cool-id")
+        assertThat(result.id).isEqualTo(ID)
         assertThat(result.page).isEqualTo(1L.toBigDecimal())
     }
 
     @Test
     fun `Add event at specific page`() {
         val event = Event().apply {
-            id = "my-cool-id"
+            id = ID
         }
         val statusCode = target!!.addEvent(event, 1)
         assertThat(statusCode).isEqualTo(200)
@@ -61,8 +63,17 @@ internal class BasicTests {
         assertThat(results).hasSize(1)
         val result = results[0]
 
-        assertThat(result.id).isEqualTo("my-cool-id")
+        assertThat(result.id).isEqualTo(ID)
         assertThat(result.page).isEqualTo(1L.toBigDecimal())
+    }
+
+    @Test
+    fun `Adding event at the wrong page should not work`() {
+        val event = Event().apply {
+            id = ID
+        }
+        val statusCode = target!!.addEvent(event, 2)
+        assertThat(statusCode).isEqualTo(400)
     }
 
     private fun Long.toBigDecimal() = BigDecimal.valueOf(this)
