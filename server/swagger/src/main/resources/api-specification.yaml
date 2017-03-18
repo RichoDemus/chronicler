@@ -35,14 +35,14 @@ paths:
            items:
              $ref: '#/definitions/Event'
     post:
-      summary: Post a new event without which page
+      summary: Post a new event without which page, treats to events with the same ID as the same in regards to idempotency
       parameters:
         - in: body
           name: body
           description: Event to add
           required: true
           schema:
-            $ref: "#/definitions/Event"
+            $ref: "#/definitions/EventWithoutPage"
       responses:
         200:
           description: OK
@@ -65,7 +65,7 @@ paths:
           schema:
             $ref: '#/definitions/Event'
     put:
-      summary: Add a new event at a specific place in the order
+      summary: Add a new event at a specific place in the order, treats to events with the same ID as the same in regards to idempotency
       parameters:
         - in: path
           name: page
@@ -78,7 +78,7 @@ paths:
           description: Event to add
           required: true
           schema:
-            $ref: "#/definitions/Event"
+            $ref: "#/definitions/EventWithoutPage"
       responses:
         200:
           description: OK
@@ -92,10 +92,28 @@ definitions:
     type: object
     required:
       - id
+      - page
+      - data
     properties:
       id:
         type: string
-        description: yadda yadda id
+        description: Unique ID of this event, uniqueness/idempotency only takes ID into consideration
       page:
         type: number
         description: Which page in the Chronicle this event has
+      data:
+        type: string
+        description: Actual event data, fill it with whatever you want to store
+
+  EventWithoutPage:
+    type: object
+    required:
+      - id
+      - data
+    properties:
+      id:
+        type: string
+        description: Unique ID of this event, uniqueness/idempotency only takes ID into consideration
+      data:
+        type: string
+        description: Actual event data, fill it with whatever you want to store

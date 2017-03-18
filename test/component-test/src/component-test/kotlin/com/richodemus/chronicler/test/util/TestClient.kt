@@ -1,6 +1,7 @@
 package com.richodemus.chronicler.test.util
 
 import com.richodemus.chronicler.server.api.model.Event
+import com.richodemus.chronicler.server.api.model.EventWithoutPage
 import io.restassured.RestAssured
 import io.restassured.config.EncoderConfig.encoderConfig
 import io.restassured.http.ContentType
@@ -16,7 +17,7 @@ internal class TestClient(port: Int) {
         return result.events
     }
 
-    fun addEvent(event: Event): Int {
+    fun addEvent(event: EventWithoutPage): Int {
         return RestAssured
                 .given().contentType("application/json").config(RestAssured.config()
                 .encoderConfig(encoderConfig()
@@ -26,7 +27,7 @@ internal class TestClient(port: Int) {
                 .then().extract().statusCode()
     }
 
-    fun addEvent(event: Event, page: Int): Int {
+    fun addEvent(event: EventWithoutPage, page: Int): Int {
         return RestAssured
                 .given().contentType("application/json").config(RestAssured.config()
                 .encoderConfig(encoderConfig()

@@ -2,7 +2,7 @@ package com.richodemus.chronicler.server.core
 
 
 class Chronicle {
-    private val ids:MutableList<String> = mutableListOf()
+    private val ids: MutableList<String> = mutableListOf()
     private val events: MutableList<Event> = mutableListOf()
     internal val page: Long
         get() = events.lastOrNull()?.page ?: 0L
@@ -28,5 +28,5 @@ class Chronicle {
 
     private fun calculateNextPage() = page + 1L
 
-    fun getEvents() = events.toList()
+    fun getEvents(): List<Event> = events
 }

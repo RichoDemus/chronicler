@@ -3,6 +3,7 @@ package com.richodemus.chronicler.server.dropwizard
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.richodemus.chronicler.server.api.api.EventsApi
 import com.richodemus.chronicler.server.api.model.Event
+import com.richodemus.chronicler.server.api.model.EventWithoutPage
 import com.richodemus.chronicler.server.core.Chronicle
 import com.richodemus.chronicler.server.core.WrongPageException
 import java.math.BigDecimal
@@ -26,13 +27,13 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
     /**
      * Used when specifying a page exactly
      */
-    override fun eventsPagePut(page: Long?, event: Event?): Response {
+    override fun eventsPagePut(page: Long?, event: EventWithoutPage?): Response {
         if (event == null || page == null) {
             //todo can this even happen?
             return Response.status(Response.Status.BAD_REQUEST).build()
         }
         try {
-            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, page))
+            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, page, event.data))
             return Response.ok().build()
         } catch(e: WrongPageException) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.message).build()
@@ -42,13 +43,13 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
     /**
      * Used when not caring about which page number is assigned, i.e. not caring about being up to date
      */
-    override fun eventsPost(event: Event?): Response {
+    override fun eventsPost(event: EventWithoutPage?): Response {
         if (event == null) {
             //todo can this even happen?
             return Response.status(Response.Status.BAD_REQUEST).build()
         }
         try {
-            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, event.page?.toLong()))
+            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, null, event.data))
             return Response.ok().build()
         } catch(e: WrongPageException) {
             //language=JSON
@@ -60,9 +61,11 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
     private fun com.richodemus.chronicler.server.core.Event.toDtoEvent(): Event {
         val coolId = this.id
         val coolPage = this.page ?: throw IllegalStateException("Got a pageless event from the event store, this shouldn't be possible :O")
+        val coolData = this.data
         return Event().apply {
             id = coolId
             page = coolPage.toBigDecimal()
+            data = coolData
         }
     }
 

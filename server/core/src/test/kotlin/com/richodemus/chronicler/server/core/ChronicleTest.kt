@@ -6,6 +6,7 @@ import org.junit.Test
 
 internal class ChronicleTest {
     private val id = "uuid"
+    private val data = "interesting data"
 
     @Test
     fun `New Chronicle should be empty`() {
@@ -22,7 +23,7 @@ internal class ChronicleTest {
     @Test
     fun `A Chronicle with one event should return one event`() {
         val target = Chronicle()
-        target.addEvent(Event(id, 1L))
+        target.addEvent(Event(id, 1L, ""))
 
         assertThat(target.getEvents()).hasSize(1)
     }
@@ -30,7 +31,7 @@ internal class ChronicleTest {
     @Test
     fun `A Chronicle with one event should be at page one`() {
         val target = Chronicle()
-        target.addEvent(Event(id, 1L))
+        target.addEvent(Event(id, 1L, ""))
 
         assertThat(target.page).isEqualTo(1L)
     }
@@ -39,29 +40,42 @@ internal class ChronicleTest {
     fun `Add pageless Event to empty Chronicle`() {
         val target = Chronicle()
 
-        target.addEvent(Event(id, null))
+        target.addEvent(Event(id, null, data))
 
-        val result = target.getEvents()[0]
+        val result = target.getEvents().single()
         assertThat(result.id).isEqualTo(id)
         assertThat(result.page).isEqualTo(1L)
+        assertThat(result.data).isEqualTo(data)
+    }
+
+    @Test
+    fun `Add Event to first page of empty Chronicle`() {
+        val target = Chronicle()
+
+        target.addEvent(Event(id, 1L, data))
+
+        val result = target.getEvents().single()
+        assertThat(result.id).isEqualTo(id)
+        assertThat(result.page).isEqualTo(1L)
+        assertThat(result.data).isEqualTo(data)
     }
 
     @Test
     fun `Adding event at the wrong page should throw exception`() {
         val target = Chronicle()
-
-        assertThatThrownBy { target.addEvent(Event(id, 2L)) }.isInstanceOf(WrongPageException::class.java)
+        assertThatThrownBy { target.addEvent(Event(id, 2L, "")) }.isInstanceOf(WrongPageException::class.java)
     }
 
     @Test
     fun `Should not insert duplicate Event`() {
         val target = Chronicle()
 
-        target.addEvent(Event(id, null))
-        target.addEvent(Event(id, null))
+        target.addEvent(Event(id, null, "original data"))
+        target.addEvent(Event(id, null, "second data"))
 
         val result = target.getEvents()
 
         assertThat(result).hasSize(1)
+        assertThat(result.single().data).isEqualTo("original data")
     }
 }
