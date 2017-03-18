@@ -17,6 +17,9 @@ subprojects {
             options.compilerArgs << "-Xlint:all" << "-Werror"
         }
     }
+    configurations {
+        all*.exclude group: 'org.glassfish.hk2.external', module: 'javax.inject'
+    }
 }
 
 buildscript {
