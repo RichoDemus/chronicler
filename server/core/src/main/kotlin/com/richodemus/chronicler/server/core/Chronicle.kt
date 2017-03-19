@@ -1,8 +1,9 @@
 package com.richodemus.chronicler.server.core
 
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
+@Singleton
 class Chronicle @Inject constructor(val listener: EventCreationListener) {
 
     private val ids: MutableList<String> = mutableListOf()

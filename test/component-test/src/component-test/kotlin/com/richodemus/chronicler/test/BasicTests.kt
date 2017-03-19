@@ -16,9 +16,7 @@ internal class BasicTests : DropwizardTest() {
 
     @Test
     fun `Add event without specific page`() {
-        val event = createEvent(ID, DATA)
-        val statusCode = getClient().addEvent(event)
-        assertThat(statusCode).isEqualTo(200)
+        sendEvent(createEvent(ID, DATA))
 
         val results = getClient().getAllEvents()
 
@@ -32,9 +30,7 @@ internal class BasicTests : DropwizardTest() {
 
     @Test
     fun `Add event at specific page`() {
-        val event = createEvent(ID, DATA)
-        val statusCode = getClient().addEvent(event, 1)
-        assertThat(statusCode).isEqualTo(200)
+        sendEvent(createEvent(ID, DATA), 1)
 
         val results = getClient().getAllEvents()
 
@@ -48,19 +44,14 @@ internal class BasicTests : DropwizardTest() {
 
     @Test
     fun `Adding event at the wrong page should not work`() {
-        val event = createEvent(ID, DATA)
-        val statusCode = getClient().addEvent(event, 2)
+        val statusCode = getClient().addEvent(createEvent(ID, DATA), 2)
         assertThat(statusCode).isEqualTo(400)
     }
 
     @Test
     fun `Should not insert duplicate events`() {
-        val firstEvent = createEvent(ID, DATA)
-        val secondEvent = createEvent(ID, DATA.reversed())
-        var statusCode = getClient().addEvent(firstEvent)
-        assertThat(statusCode).isEqualTo(200)
-        statusCode = getClient().addEvent(secondEvent)
-        assertThat(statusCode).isEqualTo(200)
+        sendEvent(createEvent(ID, DATA))
+        sendEvent(createEvent(ID, DATA.reversed()))
 
         val results = getClient().getAllEvents()
         assertThat(results).hasSize(1)

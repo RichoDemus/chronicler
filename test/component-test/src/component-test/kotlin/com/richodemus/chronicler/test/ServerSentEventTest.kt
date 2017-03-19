@@ -1,6 +1,5 @@
 package com.richodemus.chronicler.test
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -9,9 +8,7 @@ internal class ServerSentEventTest : DropwizardTest() {
     fun `Should send new event to listeners`() {
         val sseClient = getClient().createSSEClient()
 
-        val event = createEvent("uuid", "data")
-        val statusCode = getClient().addEvent(event)
-        Assertions.assertThat(statusCode).isEqualTo(200)
+        sendEvent(createEvent("uuid", "data"))
 
         sseClient.awaitOneEvent()
 
@@ -29,8 +26,7 @@ internal class ServerSentEventTest : DropwizardTest() {
 
         println("Preparation done, time to send...")
         events.forEach {
-            val statusCode = getClient().addEvent(it)
-            Assertions.assertThat(statusCode).isEqualTo(200)
+            sendEvent(it)
         }
 
         println("$count events sent, time to assert...")
@@ -42,5 +38,28 @@ internal class ServerSentEventTest : DropwizardTest() {
         listeners.forEach {
             assertThat(it.areEventsInOrder()).isTrue()
         }
+    }
+
+    @Test
+    fun `Should receive all past and future events`() {
+        sendEvent(createEvent("1", "data"))
+        sendEvent(createEvent("2", "data"))
+
+        val sseClient = getClient().createSSEClient()
+
+        sseClient.awaitEvents(2)
+
+        assertThat(sseClient.events[0]).isEqualTo("1")
+        assertThat(sseClient.events[1]).isEqualTo("2")
+
+        sendEvent(createEvent("3", "data"))
+
+        sseClient.awaitEvents(3)
+        assertThat(sseClient.events[2]).isEqualTo("3")
+
+        sendEvent(createEvent("4", "data"))
+
+        sseClient.awaitEvents(4)
+        assertThat(sseClient.events[3]).isEqualTo("4")
     }
 }
