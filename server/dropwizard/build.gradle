@@ -17,7 +17,11 @@ dependencies {
     compile 'io.dropwizard.metrics:metrics-healthchecks:3.1.2'
     compile 'com.smoketurner:dropwizard-swagger:1.0.6-1'
 
+    compile 'org.glassfish.jersey.media:jersey-media-sse:2.23.2'
+
     compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+
+    compile 'org.slf4j:slf4j-api:1.7.25'
 
     compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
     compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"

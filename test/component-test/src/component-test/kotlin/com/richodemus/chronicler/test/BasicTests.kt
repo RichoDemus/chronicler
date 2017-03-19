@@ -1,49 +1,24 @@
 package com.richodemus.chronicler.test
 
-import com.richodemus.chronicler.server.api.model.EventWithoutPage
-import com.richodemus.chronicler.test.util.InprocessChronicleApplication
-import com.richodemus.chronicler.test.util.TestClient
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import java.math.BigDecimal
 
-internal class BasicTests {
+internal class BasicTests : DropwizardTest() {
     private val ID = "uuid"
     private val DATA = "Lots of data"
 
-    private var server: InprocessChronicleApplication? = null
-    private var target: TestClient? = null
-
-    @Before
-    fun setUp() {
-        server = InprocessChronicleApplication()
-        server!!.start()
-        target = TestClient(server!!.port())
-    }
-
-    @After
-    fun tearDown() {
-        server!!.stop()
-    }
-
     @Test
     fun `Newly started Chronicle shouldn't have any Events`() {
-        val result = target!!.getAllEvents()
+        val result = getClient().getAllEvents()
         assertThat(result).isEmpty()
     }
 
     @Test
     fun `Add event without specific page`() {
-        val event = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
-        val statusCode = target!!.addEvent(event)
-        assertThat(statusCode).isEqualTo(200)
+        sendEvent(createEvent(ID, DATA))
 
-        val results = target!!.getAllEvents()
+        val results = getClient().getAllEvents()
 
         assertThat(results).hasSize(1)
         val result = results.single()
@@ -55,14 +30,9 @@ internal class BasicTests {
 
     @Test
     fun `Add event at specific page`() {
-        val event = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
-        val statusCode = target!!.addEvent(event, 1)
-        assertThat(statusCode).isEqualTo(200)
+        sendEvent(createEvent(ID, DATA), 1)
 
-        val results = target!!.getAllEvents()
+        val results = getClient().getAllEvents()
 
         assertThat(results).hasSize(1)
         val result = results.single()
@@ -74,30 +44,16 @@ internal class BasicTests {
 
     @Test
     fun `Adding event at the wrong page should not work`() {
-        val event = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
-        val statusCode = target!!.addEvent(event, 2)
+        val statusCode = getClient().addEvent(createEvent(ID, DATA), 2)
         assertThat(statusCode).isEqualTo(400)
     }
 
     @Test
     fun `Should not insert duplicate events`() {
-        val firstEvent = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
-        val secondEvent = EventWithoutPage().apply {
-            id = ID
-            data = DATA.reversed()
-        }
-        var statusCode = target!!.addEvent(firstEvent)
-        assertThat(statusCode).isEqualTo(200)
-        statusCode = target!!.addEvent(secondEvent)
-        assertThat(statusCode).isEqualTo(200)
+        sendEvent(createEvent(ID, DATA))
+        sendEvent(createEvent(ID, DATA.reversed()))
 
-        val results = target!!.getAllEvents()
+        val results = getClient().getAllEvents()
         assertThat(results).hasSize(1)
 
         val result = results.single()

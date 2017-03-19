@@ -1,7 +1,11 @@
 package com.richodemus.chronicler.server.core
 
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Chronicle {
+@Singleton
+class Chronicle @Inject constructor(val listener: EventCreationListener) {
+
     private val ids: MutableList<String> = mutableListOf()
     private val events: MutableList<Event> = mutableListOf()
     internal val page: Long
@@ -21,8 +25,10 @@ class Chronicle {
                 }
             }
 
-            events.add(event.copy(page = nextPage))
+            val insertedEvent = event.copy(page = nextPage)
+            events.add(insertedEvent)
             ids.add(event.id)
+            listener.onEvent(insertedEvent)
         }
     }
 
