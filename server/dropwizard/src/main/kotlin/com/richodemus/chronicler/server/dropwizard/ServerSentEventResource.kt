@@ -32,18 +32,21 @@ internal class ServerSentEventResource @Inject constructor(val chronicle: Chroni
     //todo investigate jersey sse broadcast
     override fun onEvent(event: Event) {
         logger.debug("Broadcasting event ${event.id} to ${outputs.size} listeners")
+        val deadOutPuts = mutableListOf<EventOutput>()
         outputs.forEach {
-            it.sendEvent(event)
+            try {
+                it.sendEvent(event)
+            } catch (e: Exception) {
+                logger.error("failed sending event to some listener, removing it", e)
+                deadOutPuts.add(it)
+            }
         }
+        outputs.removeAll(deadOutPuts)
     }
 
     private fun EventOutput.sendEvent(event: Event) {
-        try {
-            val builder = OutboundEvent.Builder()
-            builder.data(event.id)
-            this.write(builder.build())
-        } catch(e: Exception) {
-            logger.error("failed sending event to some listener", e)
-        }
+        val builder = OutboundEvent.Builder()
+        builder.data(event.id)
+        this.write(builder.build())
     }
 }
