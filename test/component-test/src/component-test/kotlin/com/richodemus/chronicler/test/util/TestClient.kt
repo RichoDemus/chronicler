@@ -46,4 +46,6 @@ internal class TestClient(port: Int) {
                 .`when`().put("$baseUrl/api/events/$page")
                 .then().extract().statusCode()
     }
+
+    fun createSSEClient() = ServerSentEventClient(baseUrl)
 }
