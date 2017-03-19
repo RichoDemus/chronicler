@@ -9,6 +9,16 @@ import io.restassured.http.ContentType
 internal class TestClient(port: Int) {
     val baseUrl: String = "http://localhost:$port"
 
+    fun mainPage() = RestAssured
+            .given()
+            .`when`().get(baseUrl)
+            .then().extract().statusCode()
+
+    fun swaggerPage() = RestAssured
+            .given()
+            .`when`().get(baseUrl)
+            .then().extract().body().asString()
+
     fun getAllEvents(): List<Event> {
         val result = RestAssured
                 .given()

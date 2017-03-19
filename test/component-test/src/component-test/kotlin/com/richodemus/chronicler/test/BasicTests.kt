@@ -1,36 +1,17 @@
 package com.richodemus.chronicler.test
 
 import com.richodemus.chronicler.server.api.model.EventWithoutPage
-import com.richodemus.chronicler.test.util.InprocessChronicleApplication
-import com.richodemus.chronicler.test.util.TestClient
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import java.math.BigDecimal
 
-internal class BasicTests {
+internal class BasicTests : DropwizardTest() {
     private val ID = "uuid"
     private val DATA = "Lots of data"
 
-    private var server: InprocessChronicleApplication? = null
-    private var target: TestClient? = null
-
-    @Before
-    fun setUp() {
-        server = InprocessChronicleApplication()
-        server!!.start()
-        target = TestClient(server!!.port())
-    }
-
-    @After
-    fun tearDown() {
-        server!!.stop()
-    }
-
     @Test
     fun `Newly started Chronicle shouldn't have any Events`() {
-        val result = target!!.getAllEvents()
+        val result = getClient().getAllEvents()
         assertThat(result).isEmpty()
     }
 
@@ -40,10 +21,10 @@ internal class BasicTests {
             id = ID
             data = DATA
         }
-        val statusCode = target!!.addEvent(event)
+        val statusCode = getClient().addEvent(event)
         assertThat(statusCode).isEqualTo(200)
 
-        val results = target!!.getAllEvents()
+        val results = getClient().getAllEvents()
 
         assertThat(results).hasSize(1)
         val result = results.single()
@@ -59,10 +40,10 @@ internal class BasicTests {
             id = ID
             data = DATA
         }
-        val statusCode = target!!.addEvent(event, 1)
+        val statusCode = getClient().addEvent(event, 1)
         assertThat(statusCode).isEqualTo(200)
 
-        val results = target!!.getAllEvents()
+        val results = getClient().getAllEvents()
 
         assertThat(results).hasSize(1)
         val result = results.single()
@@ -78,7 +59,7 @@ internal class BasicTests {
             id = ID
             data = DATA
         }
-        val statusCode = target!!.addEvent(event, 2)
+        val statusCode = getClient().addEvent(event, 2)
         assertThat(statusCode).isEqualTo(400)
     }
 
@@ -92,12 +73,12 @@ internal class BasicTests {
             id = ID
             data = DATA.reversed()
         }
-        var statusCode = target!!.addEvent(firstEvent)
+        var statusCode = getClient().addEvent(firstEvent)
         assertThat(statusCode).isEqualTo(200)
-        statusCode = target!!.addEvent(secondEvent)
+        statusCode = getClient().addEvent(secondEvent)
         assertThat(statusCode).isEqualTo(200)
 
-        val results = target!!.getAllEvents()
+        val results = getClient().getAllEvents()
         assertThat(results).hasSize(1)
 
         val result = results.single()
