@@ -12,7 +12,7 @@ import javax.ws.rs.Path
 import javax.ws.rs.Produces
 
 @Path("event-stream")
-internal class ServerSentEventResource : EventCreationListener{
+internal class ServerSentEventResource : EventCreationListener {
     val logger: Logger = LoggerFactory.getLogger(javaClass)
     //todo figure out how to remove disconnected clients
     val outputs = mutableListOf<EventOutput>()
@@ -27,7 +27,7 @@ internal class ServerSentEventResource : EventCreationListener{
 
     //todo investigate jersey sse broadcast
     override fun onEvent(event: Event) {
-        logger.info("Broadcasting event ${event.id} to ${outputs.size} listeners")
+        logger.debug("Broadcasting event ${event.id} to ${outputs.size} listeners")
         outputs.forEach {
             try {
                 val builder = OutboundEvent.Builder()

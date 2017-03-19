@@ -1,7 +1,11 @@
 package com.richodemus.chronicler.test.util
 
+import com.google.common.collect.Ordering
+import org.awaitility.Awaitility
 import org.glassfish.jersey.media.sse.EventInput
 import org.glassfish.jersey.media.sse.SseFeature
+import java.util.concurrent.Callable
+import java.util.concurrent.TimeUnit
 import javax.ws.rs.client.ClientBuilder
 
 
@@ -16,17 +20,26 @@ internal class ServerSentEventClient(baseUrl: String) {
 
     init {
         Thread(Runnable {
-            try {
-                while (!eventInput.isClosed) {
-                    val inboundEvent = eventInput.read() ?: break// connection has been closed
+            while (!eventInput.isClosed) {
+                val inboundEvent = eventInput.read() ?: break// connection has been closed
 
-                    val id = inboundEvent.readData(String::class.java)
-                    onEvent(id)
-                }
-            } finally {
-                println("Event receiving thread done...")
+                val id = inboundEvent.readData(String::class.java)
+                onEvent(id)
             }
         }).start()
+    }
+
+    fun awaitOneEvent() {
+        awaitEvents(1)
+    }
+
+    fun awaitEvents(count: Int) {
+        Awaitility.await().atMost(count.toLong(), TimeUnit.SECONDS).until(Callable { events.isNotEmpty() })
+    }
+
+    fun areEventsInOrder(): Boolean {
+        val integerIds = events.map(String::toInt)
+        return Ordering.natural<Int>().isOrdered(integerIds)
     }
 
     private fun onEvent(id: String) {

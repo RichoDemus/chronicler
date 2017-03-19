@@ -1,6 +1,5 @@
 package com.richodemus.chronicler.test
 
-import com.richodemus.chronicler.server.api.model.EventWithoutPage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.math.BigDecimal
@@ -17,10 +16,7 @@ internal class BasicTests : DropwizardTest() {
 
     @Test
     fun `Add event without specific page`() {
-        val event = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
+        val event = createEvent(ID, DATA)
         val statusCode = getClient().addEvent(event)
         assertThat(statusCode).isEqualTo(200)
 
@@ -36,10 +32,7 @@ internal class BasicTests : DropwizardTest() {
 
     @Test
     fun `Add event at specific page`() {
-        val event = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
+        val event = createEvent(ID, DATA)
         val statusCode = getClient().addEvent(event, 1)
         assertThat(statusCode).isEqualTo(200)
 
@@ -55,24 +48,15 @@ internal class BasicTests : DropwizardTest() {
 
     @Test
     fun `Adding event at the wrong page should not work`() {
-        val event = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
+        val event = createEvent(ID, DATA)
         val statusCode = getClient().addEvent(event, 2)
         assertThat(statusCode).isEqualTo(400)
     }
 
     @Test
     fun `Should not insert duplicate events`() {
-        val firstEvent = EventWithoutPage().apply {
-            id = ID
-            data = DATA
-        }
-        val secondEvent = EventWithoutPage().apply {
-            id = ID
-            data = DATA.reversed()
-        }
+        val firstEvent = createEvent(ID, DATA)
+        val secondEvent = createEvent(ID, DATA.reversed())
         var statusCode = getClient().addEvent(firstEvent)
         assertThat(statusCode).isEqualTo(200)
         statusCode = getClient().addEvent(secondEvent)

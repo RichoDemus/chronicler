@@ -13,6 +13,8 @@ dependencies {
     testCompile 'io.rest-assured:rest-assured:3.0.2'
 
     testCompile 'org.awaitility:awaitility:2.0.0'
+    testCompile 'com.google.guava:guava:21.0'
+
 
     testCompile "junit:junit:$rootProject.junitVersion"
     testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"
