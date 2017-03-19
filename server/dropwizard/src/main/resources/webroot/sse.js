@@ -36,3 +36,26 @@ function setupServerSentEvents(id)
     }, false);
     console.log("Shit should work now");
 }
+
+function createAndSendEvent()
+{
+    const uuid = guidGenerator();
+    const someData = Math.random().toString(36).substr(2, 5);
+    postData = {};
+    postData.id = uuid;
+    postData.data = someData;
+    $.ajax({
+        url: "api/events",
+        contentType: "application/json",
+        data: JSON.stringify(postData),
+        type: "POST"
+    });
+}
+// credits to http://stackoverflow.com/a/6860916/78679
+function guidGenerator() {
+    const S4 = function ()
+    {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
