@@ -9,7 +9,7 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
 
-    testCompile 'io.dropwizard:dropwizard-testing:1.0.6'
+    testCompile "io.dropwizard:dropwizard-testing:$rootProject.dropwizardVersion"
     testCompile 'io.rest-assured:rest-assured:3.0.2'
 
     testCompile 'org.awaitility:awaitility:2.0.0'
