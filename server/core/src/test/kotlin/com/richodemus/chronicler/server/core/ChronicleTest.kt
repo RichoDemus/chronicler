@@ -10,17 +10,20 @@ internal class ChronicleTest {
     private val id = "uuid"
     private val data = "interesting data"
 
-    private var mock: EventCreationListener? = null
+    private var eventListenerMock: EventCreationListener? = null
+    private var eventPersisterMock: EventPersister? = null
 
     private var target: Chronicle? = null
 
     @Before
     fun setUp() {
-        mock = mock<EventCreationListener> {}
-        target = Chronicle(mock())
+        eventListenerMock = mock<EventCreationListener> {}
+        eventPersisterMock = mock<EventPersister> {}
+        target = Chronicle(eventListenerMock(), eventPersisterMock())
     }
 
-    private fun mock() = mock!!
+    private fun eventListenerMock() = eventListenerMock!!
+    private fun eventPersisterMock() = eventPersisterMock!!
     private fun target() = target!!
 
     @Test
@@ -49,7 +52,16 @@ internal class ChronicleTest {
         val event = Event(id, 1L, "")
         target.addEvent(event)
 
-        verify(mock()).onEvent(eq(event))
+        verify(eventListenerMock()).onEvent(eq(event))
+    }
+
+    @Test
+    fun `Should send newly created event to persister`() {
+        val target = target()
+        val event = Event(id, 1L, "")
+        target.addEvent(event)
+
+        verify(eventPersisterMock()).persist(eq(event))
     }
 
     @Test
@@ -110,6 +122,6 @@ internal class ChronicleTest {
         target.addEvent(Event(id, null, "original data"))
         target.addEvent(Event(id, null, "second data"))
 
-        verify(mock(), times(1)).onEvent(any())
+        verify(eventListenerMock(), times(1)).onEvent(any())
     }
 }

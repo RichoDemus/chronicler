@@ -4,7 +4,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Chronicle @Inject constructor(val listener: EventCreationListener) {
+class Chronicle
+@Inject constructor(val listener: EventCreationListener, val persister: EventPersister) {
 
     private val ids: MutableList<String> = mutableListOf()
     private val events: MutableList<Event> = mutableListOf()
@@ -26,8 +27,10 @@ class Chronicle @Inject constructor(val listener: EventCreationListener) {
             }
 
             val insertedEvent = event.copy(page = nextPage)
-            events.add(insertedEvent)
+            persister.persist(insertedEvent)
             ids.add(event.id)
+            // rest can be asynch, I think
+            events.add(insertedEvent)
             listener.onEvent(insertedEvent)
         }
     }
