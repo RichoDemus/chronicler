@@ -12,6 +12,14 @@ class Chronicle
     internal val page: Long
         get() = events.lastOrNull()?.page ?: 0L
 
+    init {
+        val eventIterator = persister.readEvents()
+        eventIterator.forEach {
+            events.add(it)
+            ids.add(it.id)
+        }
+    }
+
     fun addEvent(event: Event) {
         synchronized(events) {
             if (ids.contains(event.id)) {
@@ -38,4 +46,5 @@ class Chronicle
     private fun calculateNextPage() = page + 1L
 
     fun getEvents(): List<Event> = events
+    internal fun getIds(): List<String> = ids
 }

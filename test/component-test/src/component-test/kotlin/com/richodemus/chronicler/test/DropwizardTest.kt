@@ -6,21 +6,22 @@ import com.richodemus.chronicler.test.util.TestClient
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
+import java.math.BigDecimal
 
 internal abstract class DropwizardTest {
 
-    private var server: InprocessChronicleApplication? = null
-    private var target: TestClient? = null
+    protected var server: InprocessChronicleApplication? = null
+    protected var target: TestClient? = null
 
     @Before
-    fun setUp() {
+    open fun setUp() {
         server = InprocessChronicleApplication()
         server!!.start()
         target = TestClient(server!!.port())
     }
 
     @After
-    fun tearDown() {
+    open fun tearDown() {
         server!!.stop()
     }
 
@@ -40,4 +41,6 @@ internal abstract class DropwizardTest {
     protected fun sendEvent(event: EventWithoutPage, page: Int) {
         assertThat(getClient().addEvent(event, page)).isEqualTo(200)
     }
+
+    protected fun Long.toBigDecimal() = BigDecimal.valueOf(this)
 }

@@ -18,7 +18,9 @@ internal class ChronicleTest {
     @Before
     fun setUp() {
         eventListenerMock = mock<EventCreationListener> {}
-        eventPersisterMock = mock<EventPersister> {}
+        eventPersisterMock = mock<EventPersister> {
+            on { readEvents() } doReturn listOf<Event>().iterator()
+        }
         target = Chronicle(eventListenerMock(), eventPersisterMock())
     }
 
@@ -62,6 +64,24 @@ internal class ChronicleTest {
         target.addEvent(event)
 
         verify(eventPersisterMock()).persist(eq(event))
+    }
+
+    @Test
+    fun `Should read events from persistence`() {
+        val events = listOf(Event("one", 1L, ""), Event("two", 2L, ""))
+        whenever(eventPersisterMock().readEvents()).thenReturn(events.iterator())
+        target = Chronicle(eventListenerMock(), eventPersisterMock())
+
+        assertThat(target().getEvents()).containsExactly(*events.toTypedArray())
+    }
+
+    @Test
+    fun `Should read event ids from persistence`() {
+        val events = listOf(Event("one", 1L, ""), Event("two", 2L, ""))
+        whenever(eventPersisterMock().readEvents()).thenReturn(events.iterator())
+        target = Chronicle(eventListenerMock(), eventPersisterMock())
+
+        assertThat(target().getIds()).containsExactly(*events.map { it.id }.toTypedArray())
     }
 
     @Test
