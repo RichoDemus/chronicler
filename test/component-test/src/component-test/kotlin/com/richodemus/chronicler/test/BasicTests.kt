@@ -2,7 +2,6 @@ package com.richodemus.chronicler.test
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.math.BigDecimal
 
 internal class BasicTests : DropwizardTest() {
     private val ID = "uuid"
@@ -62,7 +61,5 @@ internal class BasicTests : DropwizardTest() {
         assertThat(result.page).isEqualTo(1L.toBigDecimal())
         assertThat(result.data).isEqualTo(DATA)
     }
-
-    private fun Long.toBigDecimal() = BigDecimal.valueOf(this)
 }
 
