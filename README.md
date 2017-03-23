@@ -19,3 +19,10 @@ An Event Store running on the JVM
 
 ## Run component tests
 `./gradlew componentTest`
+
+## Configuration
+Behaviour is configured via environment variables
+* SAVE_TO_DISK - boolean, default true
+* DATA_DIR - string, default data/
+
+See docker-run.sh for examples

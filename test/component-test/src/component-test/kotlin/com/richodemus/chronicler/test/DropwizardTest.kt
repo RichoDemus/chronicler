@@ -15,13 +15,23 @@ internal abstract class DropwizardTest {
 
     @Before
     open fun setUp() {
+        System.setProperty("chronicler.saveToDisk", "false")
+        start()
+    }
+
+    @After
+    open fun tearDown() {
+        stop()
+        System.clearProperty("chronicler.saveToDisk")
+    }
+
+    protected fun start() {
         server = InprocessChronicleApplication()
         server!!.start()
         target = TestClient(server!!.port())
     }
 
-    @After
-    open fun tearDown() {
+    protected fun stop() {
         server!!.stop()
     }
 

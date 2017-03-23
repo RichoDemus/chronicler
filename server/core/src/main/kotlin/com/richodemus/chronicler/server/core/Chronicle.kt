@@ -1,23 +1,30 @@
 package com.richodemus.chronicler.server.core
 
+import org.slf4j.LoggerFactory
+import java.time.Duration
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.system.measureTimeMillis
 
 @Singleton
 class Chronicle
 @Inject constructor(val listener: EventCreationListener, val persister: EventPersister) {
-
+    private val logger = LoggerFactory.getLogger(this::class.java)
     private val ids: MutableList<String> = mutableListOf()
     private val events: MutableList<Event> = mutableListOf()
     internal val page: Long
         get() = events.lastOrNull()?.page ?: 0L
 
     init {
-        val eventIterator = persister.readEvents()
-        eventIterator.forEach {
-            events.add(it)
-            ids.add(it.id)
+        val time = measureTimeMillis {
+            val eventIterator = persister.readEvents()
+            eventIterator.forEach {
+                events.add(it)
+                ids.add(it.id)
+            }
         }
+        val duration = Duration.ofMillis(time)
+        logger.info("Loaded ${ids.size} events in $duration")
     }
 
     fun addEvent(event: Event) {

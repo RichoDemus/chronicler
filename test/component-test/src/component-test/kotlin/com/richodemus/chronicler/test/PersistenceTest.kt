@@ -13,7 +13,7 @@ internal class PersistenceTest : DropwizardTest() {
     override fun setUp() {
         System.setProperty("chronicler.saveToDisk", "true")
         System.setProperty("chronicler.dataDir", "build/saveData/${UUID.randomUUID()}")
-        super.setUp()
+        start()
     }
 
     override fun tearDown() {
@@ -26,8 +26,8 @@ internal class PersistenceTest : DropwizardTest() {
     fun `Should reload events upon restart`() {
         sendEvent(createEvent(ID, DATA))
 
-        super.tearDown()
-        super.setUp()
+        stop()
+        start()
 
         val results = getClient().getAllEvents()
 
@@ -37,6 +37,5 @@ internal class PersistenceTest : DropwizardTest() {
         Assertions.assertThat(result.id).isEqualTo(ID)
         Assertions.assertThat(result.page).isEqualTo(1L.toBigDecimal())
         Assertions.assertThat(result.data).isEqualTo(DATA)
-
     }
 }
