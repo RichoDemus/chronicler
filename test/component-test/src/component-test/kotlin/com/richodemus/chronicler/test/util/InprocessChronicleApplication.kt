@@ -9,7 +9,8 @@ internal class InprocessChronicleApplication {
     private val support: DropwizardTestSupport<ChroniclerConfiguration> = DropwizardTestSupport(
             ChroniclerApplication::class.java,
             "../../server/docker/config.yaml",
-            ConfigOverride.config("server.applicationConnectors[0].port", "0"))
+            ConfigOverride.config("server.applicationConnectors[0].port", "0"),
+            ConfigOverride.config("server.adminConnectors[0].port", "0"))
 
     fun start() = support.before()
     fun stop() = support.after()
