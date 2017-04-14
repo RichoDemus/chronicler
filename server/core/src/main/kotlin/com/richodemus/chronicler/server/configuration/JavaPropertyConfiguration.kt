@@ -7,7 +7,7 @@ import java.io.File
 internal class JavaPropertyConfiguration : Configuration {
     private val SAVE_TO_DISK_KEY = "chronicler.saveToDisk"
     private val DATA_DIR_KEY = "chronicler.dataDir"
-    private val logger = LoggerFactory.getLogger(this::class.java)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     init {
         logger.info("Save to disk is ${System.getProperty(SAVE_TO_DISK_KEY)}")

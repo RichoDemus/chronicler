@@ -11,7 +11,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$rootProject.kotlinVersion"
     permitUnusedDeclared "org.jetbrains.kotlin:kotlin-reflect:$rootProject.kotlinVersion"
     // end workaround
-    compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
+    //compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
 
     compile "io.dropwizard:dropwizard-core:$rootProject.dropwizardVersion"
     compile "io.dropwizard:dropwizard-assets:$rootProject.dropwizardVersion"

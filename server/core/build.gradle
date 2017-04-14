@@ -3,7 +3,7 @@ apply plugin: 'kotlin'
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
-    compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
+    //compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
 
     compile 'org.slf4j:slf4j-api:1.7.25'
 

@@ -4,7 +4,7 @@ dependencies {
     compile project(":server:core")
     compile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
-    compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
+    //compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
 
     compile 'javax.inject:javax.inject:1'
 

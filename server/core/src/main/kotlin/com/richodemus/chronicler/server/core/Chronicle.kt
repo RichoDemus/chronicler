@@ -9,7 +9,7 @@ import kotlin.system.measureTimeMillis
 @Singleton
 class Chronicle
 @Inject constructor(val listener: EventCreationListener, val persister: EventPersister) {
-    private val logger = LoggerFactory.getLogger(this::class.java)
+    private val logger = LoggerFactory.getLogger(javaClass)
     private val ids: MutableList<String> = mutableListOf()
     private val events: MutableList<Event> = mutableListOf()
     internal val page: Long
