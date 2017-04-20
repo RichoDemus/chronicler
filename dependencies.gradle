@@ -3,7 +3,7 @@ ext {
     kotlinVersion = '1.0.6'
     jacksonVersion = '2.8.7'
     jetbrainsAnnotationsVersion = '15.0'
-    dropwizardVersion = '1.0.6'
+    dropwizardVersion = '1.1.0'
 
     // test dependencies
     junitVersion = '4.12'
