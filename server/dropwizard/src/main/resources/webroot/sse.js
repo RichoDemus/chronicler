@@ -34,6 +34,7 @@ function setupServerSentEvents() {
 function createAndSendEvent() {
     const postData = {};
     postData.id = guidGenerator();
+    postData.type = "some_time";
     postData.data = Math.random().toString(36).substr(2, 5);
     console.log("posting event " + postData.id + ": " + postData.data);
     $.ajax({
