@@ -1,6 +1,12 @@
 package com.richodemus.chronicler.server.core
 
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
@@ -43,7 +49,7 @@ internal class ChronicleTest {
     @Test
     fun `A Chronicle with one event should return one event`() {
         val target = target()
-        target.addEvent(Event(id, 1L, ""))
+        target.addEvent(Event(id, "type", 1L, ""))
 
         assertThat(target.getEvents()).hasSize(1)
     }
@@ -51,7 +57,7 @@ internal class ChronicleTest {
     @Test
     fun `Should send newly created event to listener`() {
         val target = target()
-        val event = Event(id, 1L, "")
+        val event = Event(id, "type", 1L, "")
         target.addEvent(event)
 
         verify(eventListenerMock()).onEvent(eq(event))
@@ -60,7 +66,7 @@ internal class ChronicleTest {
     @Test
     fun `Should send newly created event to persister`() {
         val target = target()
-        val event = Event(id, 1L, "")
+        val event = Event(id, "type", 1L, "")
         target.addEvent(event)
 
         verify(eventPersisterMock()).persist(eq(event))
@@ -68,7 +74,7 @@ internal class ChronicleTest {
 
     @Test
     fun `Should read events from persistence`() {
-        val events = listOf(Event("one", 1L, ""), Event("two", 2L, ""))
+        val events = listOf(Event("one", "type", 1L, ""), Event("two", "type", 2L, ""))
         whenever(eventPersisterMock().readEvents()).thenReturn(events.iterator())
         target = Chronicle(eventListenerMock(), eventPersisterMock())
 
@@ -77,7 +83,7 @@ internal class ChronicleTest {
 
     @Test
     fun `Should read event ids from persistence`() {
-        val events = listOf(Event("one", 1L, ""), Event("two", 2L, ""))
+        val events = listOf(Event("one", "type", 1L, ""), Event("two", "type", 2L, ""))
         whenever(eventPersisterMock().readEvents()).thenReturn(events.iterator())
         target = Chronicle(eventListenerMock(), eventPersisterMock())
 
@@ -87,7 +93,7 @@ internal class ChronicleTest {
     @Test
     fun `A Chronicle with one event should be at page one`() {
         val target = target()
-        target.addEvent(Event(id, 1L, ""))
+        target.addEvent(Event(id, "type", 1L, ""))
 
         assertThat(target.page).isEqualTo(1L)
     }
@@ -96,7 +102,7 @@ internal class ChronicleTest {
     fun `Add pageless Event to empty Chronicle`() {
         val target = target()
 
-        target.addEvent(Event(id, null, data))
+        target.addEvent(Event(id, "type", null, data))
 
         val result = target.getEvents().single()
         assertThat(result.id).isEqualTo(id)
@@ -108,7 +114,7 @@ internal class ChronicleTest {
     fun `Add Event to first page of empty Chronicle`() {
         val target = target()
 
-        target.addEvent(Event(id, 1L, data))
+        target.addEvent(Event(id, "type", 1L, data))
 
         val result = target.getEvents().single()
         assertThat(result.id).isEqualTo(id)
@@ -119,15 +125,15 @@ internal class ChronicleTest {
     @Test
     fun `Adding event at the wrong page should throw exception`() {
         val target = target()
-        assertThatThrownBy { target.addEvent(Event(id, 2L, "")) }.isInstanceOf(WrongPageException::class.java)
+        assertThatThrownBy { target.addEvent(Event(id, "type", 2L, "")) }.isInstanceOf(WrongPageException::class.java)
     }
 
     @Test
     fun `Should not insert duplicate Event`() {
         val target = target()
 
-        target.addEvent(Event(id, null, "original data"))
-        target.addEvent(Event(id, null, "second data"))
+        target.addEvent(Event(id, "type", null, "original data"))
+        target.addEvent(Event(id, "type", null, "second data"))
 
         val result = target.getEvents()
 
@@ -139,8 +145,8 @@ internal class ChronicleTest {
     fun `Should not send duplicate event to listener`() {
         val target = target()
 
-        target.addEvent(Event(id, null, "original data"))
-        target.addEvent(Event(id, null, "second data"))
+        target.addEvent(Event(id, "type", null, "original data"))
+        target.addEvent(Event(id, "type", null, "second data"))
 
         verify(eventListenerMock(), times(1)).onEvent(any())
     }

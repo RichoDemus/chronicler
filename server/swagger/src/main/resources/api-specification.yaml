@@ -92,12 +92,16 @@ definitions:
     type: object
     required:
       - id
+      - type
       - page
       - data
     properties:
       id:
         type: string
         description: Unique ID of this event, uniqueness/idempotency only takes ID into consideration
+      type:
+        type: string
+        description: Type of event, to enable filtering or ease parsing
       page:
         type: number
         description: Which page in the Chronicle this event has
@@ -109,11 +113,15 @@ definitions:
     type: object
     required:
       - id
+      - type
       - data
     properties:
       id:
         type: string
         description: Unique ID of this event, uniqueness/idempotency only takes ID into consideration
+      type:
+        type: string
+        description: Type of event, to enable filtering or ease parsing
       data:
         type: string
         description: Actual event data, fill it with whatever you want to store

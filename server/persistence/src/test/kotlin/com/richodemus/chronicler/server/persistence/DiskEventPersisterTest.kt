@@ -7,7 +7,7 @@ import com.richodemus.chronicler.server.core.Event
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.File
-import java.util.*
+import java.util.UUID
 
 internal class DiskEventPersisterTest {
     @Test
@@ -19,8 +19,8 @@ internal class DiskEventPersisterTest {
 
         val target = DiskEventPersister(configurationMock)
 
-        val event1 = Event("one", 1L, "some data")
-        val event2 = Event("two", 2L, "some more data")
+        val event1 = Event("one", "type", 1L, "some data")
+        val event2 = Event("two", "type", 2L, "some more data")
         target.persist(event1)
         target.persist(event2)
 

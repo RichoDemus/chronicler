@@ -40,6 +40,7 @@ internal abstract class DropwizardTest {
     protected fun createEvent(id: String, data: String): EventWithoutPage {
         return EventWithoutPage().apply {
             this.id = id
+            this.type = "type"
             this.data = data
         }
     }

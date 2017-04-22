@@ -3,7 +3,7 @@ package com.richodemus.chronicler.test
 import org.assertj.core.api.Assertions
 import org.junit.Before
 import org.junit.Test
-import java.util.*
+import java.util.UUID
 
 internal class PersistenceTest : DropwizardTest() {
     private val ID = "uuid"

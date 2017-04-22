@@ -42,13 +42,14 @@ internal class DiskEventPersister @Inject constructor(val configuration: com.ric
 
     private data class EventDiskDTO
     @JsonCreator constructor(@JsonProperty("id") val id: String,
+                             @JsonProperty("type") val type: String,
                              @JsonProperty("page") val page: Long,
                              @JsonProperty("data") val data: String)
 
     private fun Event.toDto(): EventDiskDTO {
         val page = this.page ?: throw IllegalStateException("Can't save event without page")
-        return EventDiskDTO(this.id, page, this.data)
+        return EventDiskDTO(this.id, this.type, page, this.data)
     }
 
-    private fun DiskEventPersister.EventDiskDTO.toEvent() = Event(this.id, this.page, this.data)
+    private fun DiskEventPersister.EventDiskDTO.toEvent() = Event(this.id, this.type, this.page, this.data)
 }

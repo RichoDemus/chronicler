@@ -10,12 +10,12 @@ import org.junit.Test
 class EventResourceTest {
     @Test
     fun `Smoke test JSON serialization`() {
-        val events = mutableListOf(Event("hello", 1L, "fancy data"))
+        val events = mutableListOf(Event("hello", "interesting type", 1L, "fancy data"))
         val mock = mock<Chronicle> {
             on { getEvents() } doReturn events
         }
         //language=JSON
-        val expected = "[{\"id\":\"hello\",\"page\":1,\"data\":\"fancy data\"}]"
+        val expected = "[{\"id\":\"hello\",\"type\":\"interesting type\",\"page\":1,\"data\":\"fancy data\"}]"
 
         val result = EventResource(mock).eventsGet(mutableListOf<String>()).entity.toString()
 

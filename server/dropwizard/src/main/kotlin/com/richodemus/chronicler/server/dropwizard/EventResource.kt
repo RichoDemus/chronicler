@@ -33,7 +33,7 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
             return Response.status(Response.Status.BAD_REQUEST).build()
         }
         try {
-            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, page, event.data))
+            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, event.type, page, event.data))
             return Response.ok().build()
         } catch(e: WrongPageException) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.message).build()
@@ -49,7 +49,7 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
             return Response.status(Response.Status.BAD_REQUEST).build()
         }
         try {
-            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, null, event.data))
+            chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, event.type, null, event.data))
             return Response.ok().build()
         } catch(e: WrongPageException) {
             //language=JSON
@@ -60,10 +60,12 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
 
     private fun com.richodemus.chronicler.server.core.Event.toDtoEvent(): Event {
         val coolId = this.id
+        val coolType = this.type
         val coolPage = this.page ?: throw IllegalStateException("Got a pageless event from the event store, this shouldn't be possible :O")
         val coolData = this.data
         return Event().apply {
             id = coolId
+            type = coolType
             page = coolPage.toBigDecimal()
             data = coolData
         }
