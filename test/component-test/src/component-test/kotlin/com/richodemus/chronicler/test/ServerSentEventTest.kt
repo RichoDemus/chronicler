@@ -14,7 +14,7 @@ internal class ServerSentEventTest : DropwizardTest() {
 
         assertThat(sseClient.events).hasSize(1)
         val result = sseClient.events.single()
-        assertThat(result).isEqualTo("uuid")
+        assertThat(result.id).isEqualTo("uuid")
     }
 
     @Test
@@ -49,17 +49,17 @@ internal class ServerSentEventTest : DropwizardTest() {
 
         sseClient.awaitEvents(2)
 
-        assertThat(sseClient.events[0]).isEqualTo("1")
-        assertThat(sseClient.events[1]).isEqualTo("2")
+        assertThat(sseClient.events[0].id).isEqualTo("1")
+        assertThat(sseClient.events[1].id).isEqualTo("2")
 
         sendEvent(createEvent("3", "data"))
 
         sseClient.awaitEvents(3)
-        assertThat(sseClient.events[2]).isEqualTo("3")
+        assertThat(sseClient.events[2].id).isEqualTo("3")
 
         sendEvent(createEvent("4", "data"))
 
         sseClient.awaitEvents(4)
-        assertThat(sseClient.events[3]).isEqualTo("4")
+        assertThat(sseClient.events[3].id).isEqualTo("4")
     }
 }

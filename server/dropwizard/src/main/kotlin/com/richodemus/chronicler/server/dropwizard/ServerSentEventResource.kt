@@ -46,7 +46,8 @@ internal class ServerSentEventResource @Inject constructor(val chronicle: Chroni
 
     private fun EventOutput.sendEvent(event: Event) {
         val builder = OutboundEvent.Builder()
-        builder.data(event.id)
+        builder.id(event.id)
+        builder.data(event.data)
         this.write(builder.build())
     }
 }

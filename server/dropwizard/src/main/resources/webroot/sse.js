@@ -14,7 +14,7 @@ function setupServerSentEvents() {
     eventSource.onmessage = function (event) {
 
         const textArea = document.getElementById('events');
-        textArea.innerHTML += "New event with id " + event.data + "\n";
+        textArea.innerHTML += "New event " + event.lastEventId + " data: " + event.data + "\n";
         textArea.scrollTop = textArea.scrollHeight;
 
     };
@@ -35,6 +35,7 @@ function createAndSendEvent() {
     const postData = {};
     postData.id = guidGenerator();
     postData.data = Math.random().toString(36).substr(2, 5);
+    console.log("posting event " + postData.id + ": " + postData.data);
     $.ajax({
         url: "api/events",
         contentType: "application/json",
