@@ -1,12 +1,27 @@
+buildscript {
+    apply from: "$rootProject.projectDir/dependencies.gradle"
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.gradleVersionsPluginVersion"
+        classpath "ca.cutterslade.gradle:gradle-dependency-analyze:$rootProject.gradleDependencyAnalyzePluginVersion"
+    }
+}
+
+plugins {
+  id "net.ossindex.audit" version "0.1.0"
+}
+
 defaultTasks 'check'
 
 apply plugin: 'com.github.ben-manes.versions'
-
 subprojects {
     if (!(it.name in ['server','test'])) {
         // Investigate why the java plugin is needed :/
         apply plugin: 'java'
         apply plugin: 'ca.cutterslade.analyze'
+apply plugin: 'net.ossindex.audit'
     }
     apply from: "$rootProject.projectDir/dependencies.gradle"
     repositories {
@@ -22,13 +37,3 @@ subprojects {
     }
 }
 
-buildscript {
-    apply from: "$rootProject.projectDir/dependencies.gradle"
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.gradleVersionsPluginVersion"
-        classpath "ca.cutterslade.gradle:gradle-dependency-analyze:$rootProject.gradleDependencyAnalyzePluginVersion"
-    }
-}
