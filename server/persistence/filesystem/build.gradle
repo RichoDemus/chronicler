@@ -1,0 +1,27 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    compile project(":server:core")
+    compile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
+    //compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
+
+    compile 'javax.inject:javax.inject:1'
+
+    compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
+
+    testCompile "junit:junit:$rootProject.junitVersion"
+    testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"
+    testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testCompile 'com.nhaarman:mockito-kotlin:1.3.0'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.kotlinVersion"
+    }
+}
