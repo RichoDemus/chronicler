@@ -1,5 +1,6 @@
 package com.richodemus.chronicler.test.util
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.richodemus.chronicler.server.api.model.Event
 import com.richodemus.chronicler.server.api.model.EventWithoutPage
 import io.restassured.RestAssured
@@ -20,11 +21,13 @@ internal class TestClient(port: Int) {
             .then().extract().body().asString()
 
     fun getAllEvents(): List<Event> {
-        val result = RestAssured
+        val evenString = RestAssured
                 .given()
                 .`when`().get("$baseUrl/api/events")
-                .then().extract().body().`as`(Events::class.java)
-        return result.events
+                .then().extract().body().asString()
+
+        val data = ObjectMapper().readValue(evenString, Events::class.java)
+        return data.events
     }
 
     fun addEvent(event: EventWithoutPage): Int {

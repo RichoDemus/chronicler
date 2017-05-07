@@ -1,4 +1,4 @@
-package com.richodemus.chronicler.server.persistence
+package com.richodemus.chronicler.persistence
 
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock

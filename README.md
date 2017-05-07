@@ -22,7 +22,14 @@ An Event Store running on the JVM
 
 ## Configuration
 Behaviour is configured via environment variables
+* STORAGE - where to store events, values: DISK, GCS (google cloud storage) 
+ 
+Configuration for Disk storage:
 * SAVE_TO_DISK - boolean, default true
-* DATA_DIR - string, default data/
+* DATA_DIR - string, default data/  
+
+Configuration for Google Cloud Storage:
+* GCS_PROJECT - project name
+* GCS_BUCKET - bucket name
 
 See docker-run.sh for examples

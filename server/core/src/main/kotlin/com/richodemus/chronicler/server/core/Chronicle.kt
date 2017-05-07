@@ -10,12 +10,14 @@ import kotlin.system.measureTimeMillis
 class Chronicle
 @Inject constructor(val listener: EventCreationListener, val persister: EventPersister) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private var ready = false
     private val ids: MutableList<String> = mutableListOf()
     private val events: MutableList<Event> = mutableListOf()
     internal val page: Long
         get() = events.lastOrNull()?.page ?: 0L
 
     init {
+        logger.info("Loading events...")
         val time = measureTimeMillis {
             val eventIterator = persister.readEvents()
             eventIterator.forEach {
@@ -24,10 +26,15 @@ class Chronicle
             }
         }
         val duration = Duration.ofMillis(time)
-        logger.info("Loaded ${ids.size} events in $duration")
+        val durationString = String.format("%d minutes and %d seconds", (duration.seconds % 3600) / 60, (duration.seconds % 60))
+        logger.info("Loaded ${ids.size} events in $durationString")
+        ready = true
     }
 
     fun addEvent(event: Event) {
+        if (!ready) {
+            throw IllegalStateException("Chronicler still starting...")
+        }
         synchronized(events) {
             if (ids.contains(event.id)) {
                 return

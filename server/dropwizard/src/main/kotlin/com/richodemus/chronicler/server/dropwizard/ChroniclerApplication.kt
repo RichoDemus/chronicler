@@ -1,6 +1,7 @@
 package com.richodemus.chronicler.server.dropwizard
 
 import com.github.richodemus.guice_classpath_scanning.ClassPathScanningModule
+import com.richodemus.chronicler.server.dropwizard.inject.ChroniclerModule
 import io.dropwizard.Application
 import io.dropwizard.assets.AssetsBundle
 import io.dropwizard.setup.Bootstrap
@@ -18,7 +19,7 @@ class ChroniclerApplication : Application<ChroniclerConfiguration>() {
     override fun initialize(bootstrap: Bootstrap<ChroniclerConfiguration>) {
         bootstrap.addBundle(GuiceBundle.builder<ChroniclerConfiguration>()
                 .enableAutoConfig("com.richodemus.chronicler.server.dropwizard")
-                .modules(ClassPathScanningModule("com.richodemus.chronicler.server"))
+                .modules(ClassPathScanningModule("com.richodemus.chronicler.server"), ChroniclerModule())
                 .build())
         bootstrap.addBundle(AssetsBundle("/webroot/", "/", "index.html", "static"))
         bootstrap.addBundle(object : SwaggerBundle<ChroniclerConfiguration>() {

@@ -1,29 +1,30 @@
-package com.richodemus.chronicler.server.persistence
+package com.richodemus.chronicler.persistence
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.richodemus.chronicler.server.core.Event
+import com.richodemus.chronicler.server.core.EventPersister
 import java.io.File
 import javax.inject.Inject
 
-internal class DiskEventPersister @Inject constructor(val configuration: com.richodemus.chronicler.server.core.Configuration) : com.richodemus.chronicler.server.core.EventPersister {
+class DiskEventPersister @Inject internal constructor(val configuration: com.richodemus.chronicler.server.core.Configuration) : EventPersister {
     init {
         if (!configuration.dataDirectory().exists()) {
             configuration.dataDirectory().mkdirs()
         }
     }
 
-    override fun readEvents(): Iterator<com.richodemus.chronicler.server.core.Event> {
+    override fun readEvents(): Iterator<Event> {
         if (!configuration.saveToDisk()) {
-            return listOf<com.richodemus.chronicler.server.core.Event>().iterator()
+            return listOf<Event>().iterator()
         }
-        return object : Iterator<com.richodemus.chronicler.server.core.Event> {
+        return object : Iterator<Event> {
             private var nextPage = 1L
 
             override fun hasNext() = File(configuration.dataDirectory(), nextPage.toString()).exists()
 
-            override fun next(): com.richodemus.chronicler.server.core.Event {
+            override fun next(): Event {
                 val eventDiskDTO = ObjectMapper().readValue(File(configuration.dataDirectory(), nextPage.toString()), EventDiskDTO::class.java)
                 nextPage++
                 return eventDiskDTO.toEvent()
@@ -32,7 +33,7 @@ internal class DiskEventPersister @Inject constructor(val configuration: com.ric
         }
     }
 
-    override fun persist(event: com.richodemus.chronicler.server.core.Event) {
+    override fun persist(event: Event) {
         if (!configuration.saveToDisk()) {
             return
         }
@@ -51,5 +52,5 @@ internal class DiskEventPersister @Inject constructor(val configuration: com.ric
         return EventDiskDTO(this.id, this.type, page, this.data)
     }
 
-    private fun DiskEventPersister.EventDiskDTO.toEvent() = Event(this.id, this.type, this.page, this.data)
+    private fun EventDiskDTO.toEvent() = Event(this.id, this.type, this.page, this.data)
 }

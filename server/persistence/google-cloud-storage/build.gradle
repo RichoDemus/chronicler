@@ -1,0 +1,26 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    compile project(":server:core")
+    compile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
+    //compile "org.jetbrains:annotations:$rootProject.jetbrainsAnnotationsVersion"
+
+    compile 'javax.inject:javax.inject:1'
+
+    compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$rootProject.jacksonVersion"
+
+    compile 'com.google.cloud:google-cloud-storage:1.0.0'
+    compile 'com.google.api:gax'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.kotlinVersion"
+    }
+}
