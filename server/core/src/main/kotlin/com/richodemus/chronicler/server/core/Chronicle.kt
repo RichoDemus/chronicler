@@ -3,12 +3,13 @@ package com.richodemus.chronicler.server.core
 import org.slf4j.LoggerFactory
 import java.time.Duration
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 import kotlin.system.measureTimeMillis
 
 @Singleton
 class Chronicle
-@Inject constructor(val listener: EventCreationListener, val persister: EventPersister) {
+@Inject constructor(val listener: EventCreationListener, @Named("disk") val persister: EventPersister, @Named("gcs") val gcsPersister: EventPersister) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private var ready = false
     private val ids: MutableList<String> = mutableListOf()
@@ -29,6 +30,14 @@ class Chronicle
         val durationString = String.format("%d minutes and %d seconds", (duration.seconds % 3600) / 60, (duration.seconds % 60))
         logger.info("Loaded ${ids.size} events in $durationString")
         ready = true
+
+//        events.forEachIndexed { i, event ->
+//            gcsPersister.persist(event)
+//            if(i.mod(100) == 0) {
+//                print(".")
+//            }
+//        }
+//        logger.info("Migrated ${events.size} events...")
     }
 
     fun addEvent(event: Event) {

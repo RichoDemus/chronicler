@@ -7,7 +7,9 @@ import com.richodemus.chronicler.server.core.Event
 import com.richodemus.chronicler.server.core.EventPersister
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Named
 
+@Named("disk")
 class DiskEventPersister @Inject internal constructor(val configuration: com.richodemus.chronicler.server.core.Configuration) : EventPersister {
     init {
         if (!configuration.dataDirectory().exists()) {

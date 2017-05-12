@@ -9,8 +9,10 @@ import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.StorageOptions
 import com.richodemus.chronicler.server.core.Event
 import com.richodemus.chronicler.server.core.EventPersister
+import javax.inject.Named
 import javax.inject.Singleton
 
+@Named("gcs")
 @Singleton
 class GoogleCloudStoragePersistence : EventPersister {
     private val project = System.getProperty("chronicler.gcs.project") ?: throw IllegalArgumentException("Missing property GCS_PROJECT/chronicler.gcs.project")
