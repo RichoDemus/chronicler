@@ -22,10 +22,14 @@ env:
     - COMMIT=${TRAVIS_COMMIT::8}
 
 after_success:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=richodemus/chronicler
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - ./gradlew buildImage -Ptag=$TAG
+  - ./travis/push_docker.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST $TRAVIS_TAG
+ # - provider: script
+ #   script: travis/push_docker.sh $TRAVIS_BRANCH $TRAVIS_TAG $TRAVIS_PULL_REQUEST
+  #- docker login -u $DOCKER_USER -p $DOCKER_PASS
+  #- export REPO=richodemus/chronicler
+  #- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  #- ./gradlew buildImage -Ptag=$TAG
   #- docker tag $REPO:$COMMIT $REPO:$TAG
   #- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - test $TRAVIS_BRANCH = "master" && docker push $REPO
+  #- if [[ $TRAVIS_PULL_REQUEST == “false” ]] && [[ $TRAVIS_BRANCH == “master” ]]; then docker push $REPO; fi
+  -
