@@ -1,4 +1,7 @@
 #!/bin/bash
+# build and push docker image
+# if building a tag, both BRANCH and TAG will be the name of that tag
+#
 
 echo "push_docker run, args: $@"
 BRANCH=$1
@@ -15,10 +18,20 @@ then
   exit 0
 fi
 
-./gradlew buildImage -Ptag=latest
-docker login -u $DOCKER_USER -p $DOCKER_PASS
-docker push richodemus/chronicler:latest
+if  [ "$BRANCH" == "master" ]
+then
+  echo "Branch is master, building latest..."
+  ./gradlew buildImage -Ptag=latest
+  docker login -u $DOCKER_USER -p $DOCKER_PASS
+  docker push richodemus/chronicler:latest
+fi
 
+if [ -n "$TAG" ]
+then
+  echo "Tag is $TAG, building..."
+  ./gradlew buildImage -Ptag=${TAG}
+  docker login -u $DOCKER_USER -p $DOCKER_PASS
+  docker push richodemus/chronicler:${TAG}
+fi
 
-
-
+echo "Done..."
