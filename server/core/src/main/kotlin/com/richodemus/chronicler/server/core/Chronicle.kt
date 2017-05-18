@@ -1,10 +1,8 @@
 package com.richodemus.chronicler.server.core
 
 import org.slf4j.LoggerFactory
-import java.time.Duration
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.system.measureTimeMillis
 
 @Singleton
 class Chronicle
@@ -17,18 +15,10 @@ class Chronicle
         get() = events.lastOrNull()?.page ?: 0L
 
     init {
-        logger.info("Loading events...")
-        val time = measureTimeMillis {
-            val eventIterator = persister.readEvents()
-            eventIterator.forEach {
-                events.add(it)
-                ids.add(it.id)
-            }
-        }
-        val duration = Duration.ofMillis(time)
-        val durationString = String.format("%d minutes and %d seconds", (duration.seconds % 3600) / 60, (duration.seconds % 60))
-        logger.info("Loaded ${ids.size} events in $durationString")
+        events.addAll(EventLoader(persister).getEvents())
+        ids.addAll(events.map { it.id })
         ready = true
+        logger.info("Chronicler started and ready")
     }
 
     fun addEvent(event: Event) {
