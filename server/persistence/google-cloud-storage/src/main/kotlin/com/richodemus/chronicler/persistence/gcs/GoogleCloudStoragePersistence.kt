@@ -14,15 +14,20 @@ import javax.inject.Singleton
 @Singleton
 class GoogleCloudStoragePersistence : EventPersister {
     private val project = System.getProperty("chronicler.gcs.project") ?: throw IllegalArgumentException("Missing property GCS_PROJECT/chronicler.gcs.project")
+
     private val bucket = System.getProperty("chronicler.gcs.bucket") ?: throw IllegalArgumentException("Missing property GCS_BUCKET/chronicler.gcs.bucket")
     private val directory = "events/v1/"
-
     private val mapper = ObjectMapper().apply { registerModule(KotlinModule()) }
 
     private val service = StorageOptions.newBuilder()
             .setProjectId(project)
             .build()
             .service
+
+    override fun getNumberOfEvents(): Int {
+        return service.list(bucket)
+                    .iterateAll().count()
+    }
 
     override fun readEvents() = service.list(bucket)
             .iterateAll()

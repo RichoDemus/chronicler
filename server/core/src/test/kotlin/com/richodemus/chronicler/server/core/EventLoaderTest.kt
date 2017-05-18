@@ -30,6 +30,8 @@ internal class EventLoaderTest {
     class PersisterMock : EventPersister {
         val events = mutableListOf<Event>()
 
+        override fun getNumberOfEvents() = events.size
+
         override fun readEvents(): Iterator<Event> {
             return events.iterator()
         }

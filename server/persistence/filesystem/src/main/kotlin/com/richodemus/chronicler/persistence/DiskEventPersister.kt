@@ -15,6 +15,10 @@ class DiskEventPersister @Inject internal constructor(val configuration: com.ric
         }
     }
 
+    override fun getNumberOfEvents(): Int {
+        return configuration.dataDirectory().listFiles().size
+    }
+
     override fun readEvents(): Iterator<Event> {
         if (!configuration.saveToDisk()) {
             return listOf<Event>().iterator()

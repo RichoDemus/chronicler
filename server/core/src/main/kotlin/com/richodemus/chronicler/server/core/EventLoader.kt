@@ -9,6 +9,8 @@ class EventLoader(val persister: EventPersister) {
 
     fun getEvents(): List<Event> {
         logger.info("Loading events...")
+        val count = persister.getNumberOfEvents()
+        logger.info("There are $count events")
         val events = mutableListOf<Event>()
 
         val time = measureTimeMillis {
