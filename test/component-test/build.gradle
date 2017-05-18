@@ -12,7 +12,7 @@ dependencies {
     testCompile "io.dropwizard:dropwizard-testing:$rootProject.dropwizardVersion"
     testCompile 'io.rest-assured:rest-assured:3.0.2'
 
-    testCompile 'org.awaitility:awaitility:2.0.0'
+    testCompile "org.awaitility:awaitility:$rootProject.awaitilityVersion"
     testCompile 'com.google.guava:guava:21.0'
 
 

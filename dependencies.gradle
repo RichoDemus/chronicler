@@ -1,14 +1,15 @@
 ext {
     // compile dependencies
-    kotlinVersion = '1.0.6'
+    kotlinVersion = '1.1.2-4'
     jacksonVersion = '2.8.7'
-    jetbrainsAnnotationsVersion = '15.0'
     dropwizardVersion = '1.1.0'
 
     // test dependencies
     junitVersion = '4.12'
     assertjVersion = '3.6.2'
-    mockitoVersion = '2.7.19'
+    mockitoVersion = '2.8.9'
+    mockitoKotlinVersion = '1.4.0'
+    awaitilityVersion = '3.0.0'
 
     // plugins
     gradleVersionsPluginVersion = '0.14.0'
