@@ -20,6 +20,9 @@ An Event Store running on the JVM
 ## Run component tests
 `./gradlew componentTest`
 
+## Print task dependency tree
+`./gradlew :server:dropwizard:build :server:dropwizard:taskTree --no-repeat`
+
 ## Configuration
 Behaviour is configured via environment variables
 * STORAGE - where to store events, values: DISK, GCS (google cloud storage) 

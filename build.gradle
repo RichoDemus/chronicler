@@ -1,6 +1,7 @@
 defaultTasks 'check'
 
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.dorongold.task-tree'
 
 subprojects {
     if (!(it.name in ['server','test'])) {
@@ -26,9 +27,13 @@ buildscript {
     apply from: "$rootProject.projectDir/dependencies.gradle"
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.gradleVersionsPluginVersion"
         classpath "ca.cutterslade.gradle:gradle-dependency-analyze:$rootProject.gradleDependencyAnalyzePluginVersion"
+        classpath 'gradle.plugin.com.dorongold.plugins:task-tree:1.3'
     }
 }
