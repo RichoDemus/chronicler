@@ -1,13 +1,13 @@
 plugins {
-    id 'org.detoeuf.swagger-codegen' version '1.6.3'
+    id 'org.detoeuf.swagger-codegen' version '1.7.4'
     id 'java'
 }
 
 swagger {
     inputSpec = 'server/swagger/src/main/resources/api-specification.yaml'
 
-    output  = 'src/generated'
-    language  = 'jaxrs-spec'
+    outputDir = file('src/generated')
+    lang  = 'jaxrs-spec'
 
     additionalProperties = [
             'invokerPackage'   : 'com.richodemus.chronicler.server.api',

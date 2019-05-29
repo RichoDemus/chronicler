@@ -1,12 +1,11 @@
 apply plugin: 'kotlin'
 
-analyzeTestClassesDependencies.enabled = false
+// analyzeTestClassesDependencies.enabled = false
 
 dependencies {
     testCompile project (':server:dropwizard')
     testCompile project (':server:swagger')
 
-    testCompile "org.jetbrains.kotlin:kotlin-runtime:$rootProject.kotlinVersion"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
 
     testCompile "io.dropwizard:dropwizard-testing:$rootProject.dropwizardVersion"
@@ -49,7 +48,7 @@ configurations {
 
 task componentTest(type: Test, dependsOn: componentTestClasses) {
     description = "Runs component tests (located in src/component-test/...)."
-    testClassesDir = project.sourceSets.componentTest.output.classesDir
+    testClassesDirs = project.sourceSets.componentTest.output.classesDirs
     classpath = project.sourceSets.componentTest.runtimeClasspath
 }
 

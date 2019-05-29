@@ -1,13 +1,13 @@
 defaultTasks 'check'
 
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'com.dorongold.task-tree'
+//apply plugin: 'com.github.ben-manes.versions'
+//apply plugin: 'com.dorongold.task-tree'
 
 subprojects {
     if (!(it.name in ['server','test'])) {
         // Investigate why the java plugin is needed :/
-        apply plugin: 'java'
-        apply plugin: 'ca.cutterslade.analyze'
+//        apply plugin: 'java'
+//        apply plugin: 'ca.cutterslade.analyze'
     }
     apply from: "$rootProject.projectDir/dependencies.gradle"
     repositories {
@@ -34,6 +34,6 @@ buildscript {
     dependencies {
         classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.gradleVersionsPluginVersion"
         classpath "ca.cutterslade.gradle:gradle-dependency-analyze:$rootProject.gradleDependencyAnalyzePluginVersion"
-        classpath 'gradle.plugin.com.dorongold.plugins:task-tree:1.3'
+ //       classpath 'gradle.plugin.com.dorongold.plugins:task-tree:1.3'
     }
 }
