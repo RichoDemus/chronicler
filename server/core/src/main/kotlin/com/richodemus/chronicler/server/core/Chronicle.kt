@@ -1,12 +1,9 @@
 package com.richodemus.chronicler.server.core
 
 import org.slf4j.LoggerFactory
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class Chronicle
-@Inject constructor(val listener: EventCreationListener, val persister: EventPersister) {
+constructor(val listener: EventCreationListener, val persister: EventPersister) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private var ready = false
     private val ids: MutableList<String> = mutableListOf()

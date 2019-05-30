@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.richodemus.chronicler.server.core.Event
 import com.richodemus.chronicler.server.core.EventPersister
 import java.io.File
-import javax.inject.Inject
 
-class DiskEventPersister @Inject internal constructor(val configuration: com.richodemus.chronicler.server.core.Configuration) : EventPersister {
+class DiskEventPersister(val configuration: com.richodemus.chronicler.server.core.Configuration) : EventPersister {
     init {
         if (!configuration.dataDirectory().exists()) {
             configuration.dataDirectory().mkdirs()

@@ -14,15 +14,15 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.LongAdder
 import java.util.function.Supplier
-import javax.inject.Singleton
 
 
-@Singleton
 class GoogleCloudStoragePersistence : EventPersister {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val project = System.getProperty("chronicler.gcs.project") ?: throw IllegalArgumentException("Missing property GCS_PROJECT/chronicler.gcs.project")
+    private val project = System.getProperty("chronicler.gcs.project")
+            ?: throw IllegalArgumentException("Missing property GCS_PROJECT/chronicler.gcs.project")
 
-    private val bucket = System.getProperty("chronicler.gcs.bucket") ?: throw IllegalArgumentException("Missing property GCS_BUCKET/chronicler.gcs.bucket")
+    private val bucket = System.getProperty("chronicler.gcs.bucket")
+            ?: throw IllegalArgumentException("Missing property GCS_BUCKET/chronicler.gcs.bucket")
     private val directory = "events/v1/"
     private val mapper = ObjectMapper().apply { registerModule(KotlinModule()) }
 
@@ -46,8 +46,8 @@ class GoogleCloudStoragePersistence : EventPersister {
 
             Thread(Runnable {
                 while (run) {
-                    if(eventsStarted.sum() > 0 || eventsDownloaded.sum() > 0)
-                    logger.info("Event downloads started: ${eventsStarted.sum()}, Events downloaded: ${eventsDownloaded.sum()}")
+                    if (eventsStarted.sum() > 0 || eventsDownloaded.sum() > 0)
+                        logger.info("Event downloads started: ${eventsStarted.sum()}, Events downloaded: ${eventsDownloaded.sum()}")
                     Thread.sleep(1_000L)
                 }
             }).start()
@@ -82,10 +82,12 @@ class GoogleCloudStoragePersistence : EventPersister {
     }
 
     private data class EventDTO
-    @JsonCreator constructor(@JsonProperty("id") val id: String,
-                             @JsonProperty("type") val type: String,
-                             @JsonProperty("page") val page: Long,
-                             @JsonProperty("data") val data: String)
+    @JsonCreator constructor(
+            @JsonProperty("id") val id: String,
+            @JsonProperty("type") val type: String,
+            @JsonProperty("page") val page: Long,
+            @JsonProperty("data") val data: String
+    )
 
     private fun Event.toDto(): EventDTO {
         val page = this.page ?: throw IllegalStateException("Can't save event without page")

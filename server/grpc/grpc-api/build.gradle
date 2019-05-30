@@ -1,0 +1,43 @@
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    compile 'io.grpc:grpc-netty-shaded:1.21.0'
+    compile 'io.grpc:grpc-protobuf:1.21.0'
+    compile 'io.grpc:grpc-stub:1.21.0'
+    compile 'javax.annotation:javax.annotation-api:1.3.2'
+
+
+//    compile 'org.slf4j:slf4j-api:1.7.26'
+//
+//    testCompile 'org.junit.jupiter:junit-jupiter:5.4.2'
+//    testCompile 'org.assertj:assertj-core:3.12.2'
+//    testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+}
+
+//apply plugin: 'kotlin'
+apply plugin: 'com.google.protobuf'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.7.1"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.21.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}

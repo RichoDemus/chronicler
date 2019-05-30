@@ -1,0 +1,12 @@
+dependencies {
+    compile project (':server:core')
+    compile project (':server:persistence:filesystem')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+
+
+    compile 'org.koin:koin-core:2.0.1'
+    compile 'org.koin:koin-logger-slf4j:2.0.1'
+    testCompile 'org.koin:koin-test:2.0.1'
+}

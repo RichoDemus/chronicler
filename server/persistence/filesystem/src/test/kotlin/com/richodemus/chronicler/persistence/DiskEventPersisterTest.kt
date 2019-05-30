@@ -1,11 +1,11 @@
 package com.richodemus.chronicler.persistence
 
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
 import com.richodemus.chronicler.server.core.Configuration
 import com.richodemus.chronicler.server.core.Event
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.io.File
 import java.util.UUID
 

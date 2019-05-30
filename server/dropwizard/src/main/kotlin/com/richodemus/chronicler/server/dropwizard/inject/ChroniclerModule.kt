@@ -14,5 +14,6 @@ class ChroniclerModule : AbstractModule() {
             else -> throw IllegalArgumentException("Unsupported storage type \"$storage\"")
         }
     }
-    private fun String.orDefault(default: String) = if(this.orEmpty().isBlank()) default else this
+
+    private fun String.orDefault(default: String) = if (this.orEmpty().isBlank()) default else this
 }

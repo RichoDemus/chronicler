@@ -1,9 +1,6 @@
 package com.richodemus.chronicler.server.dropwizard
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.richodemus.chronicler.server.api.api.EventsApi
-import com.richodemus.chronicler.server.api.model.Event
-import com.richodemus.chronicler.server.api.model.EventWithoutPage
 import com.richodemus.chronicler.server.core.Chronicle
 import com.richodemus.chronicler.server.core.WrongPageException
 import java.math.BigDecimal
@@ -35,7 +32,7 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
         try {
             chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, event.type, page, event.data))
             return Response.ok().build()
-        } catch(e: WrongPageException) {
+        } catch (e: WrongPageException) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.message).build()
         }
     }
@@ -51,7 +48,7 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
         try {
             chronicle.addEvent(com.richodemus.chronicler.server.core.Event(event.id, event.type, null, event.data))
             return Response.ok().build()
-        } catch(e: WrongPageException) {
+        } catch (e: WrongPageException) {
             //language=JSON
             val msg = "{\"msg\":\"${e.message}\"}"
             return Response.status(Response.Status.BAD_REQUEST).entity(msg).build()
@@ -61,7 +58,8 @@ internal class EventResource @Inject constructor(val chronicle: Chronicle) : Eve
     private fun com.richodemus.chronicler.server.core.Event.toDtoEvent(): Event {
         val coolId = this.id
         val coolType = this.type
-        val coolPage = this.page ?: throw IllegalStateException("Got a pageless event from the event store, this shouldn't be possible :O")
+        val coolPage = this.page
+                ?: throw IllegalStateException("Got a pageless event from the event store, this shouldn't be possible :O")
         val coolData = this.data
         return Event().apply {
             id = coolId

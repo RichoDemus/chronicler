@@ -1,6 +1,5 @@
 package com.richodemus.chronicler.test
 
-import com.richodemus.chronicler.server.api.model.EventWithoutPage
 import com.richodemus.chronicler.test.util.InprocessChronicleApplication
 import com.richodemus.chronicler.test.util.TestClient
 import org.assertj.core.api.Assertions.assertThat

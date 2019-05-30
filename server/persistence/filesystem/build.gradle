@@ -1,26 +1,41 @@
-apply plugin: 'kotlin'
-
 dependencies {
     compile project(":server:core")
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
-    compile 'org.jetbrains:annotations'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile 'org.slf4j:slf4j-api:1.7.26'
 
-    compile 'javax.inject:javax.inject:1'
+    compile 'com.google.cloud:google-cloud-storage:1.76.0'
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9"
 
-    compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
-    compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
-
-    testCompile "junit:junit:$rootProject.junitVersion"
-    testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"
-    testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testCompile "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
+    testCompile 'org.junit.jupiter:junit-jupiter:5.4.2'
+    testCompile 'org.assertj:assertj-core:3.12.2'
+    testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.kotlinVersion"
-    }
-}
+//
+//
+//apply plugin: 'kotlin'
+//
+//dependencies {
+//    compile project(":server:core")
+//    compile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
+//    compile 'org.jetbrains:annotations'
+//
+//    compile 'javax.inject:javax.inject:1'
+//
+//    compile "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
+//    compile "com.fasterxml.jackson.core:jackson-annotations:$rootProject.jacksonVersion"
+//
+//    testCompile "junit:junit:$rootProject.junitVersion"
+//    testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"
+//    testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+//    testCompile "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
+//}
+//
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.kotlinVersion"
+//    }
+//}

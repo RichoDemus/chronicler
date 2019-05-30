@@ -13,7 +13,8 @@ import ru.vyarus.dropwizard.guice.GuiceBundle
 
 class ChroniclerApplication : Application<ChroniclerConfiguration>() {
     companion object {
-        @JvmStatic fun main(args: Array<String>) = ChroniclerApplication().run(*args)
+        @JvmStatic
+        fun main(args: Array<String>) = ChroniclerApplication().run(*args)
     }
 
     override fun initialize(bootstrap: Bootstrap<ChroniclerConfiguration>) {

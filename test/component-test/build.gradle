@@ -1,3 +1,13 @@
+dependencies {
+    compile project(":server:core")
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile 'org.slf4j:slf4j-api:1.7.26'
+
+    compile 'com.google.cloud:google-cloud-storage:1.76.0'
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9"
+}
+
+////
 apply plugin: 'kotlin'
 
 // analyzeTestClassesDependencies.enabled = false
@@ -6,7 +16,7 @@ dependencies {
     testCompile project (':server:dropwizard')
     testCompile project (':server:swagger')
 
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     testCompile "io.dropwizard:dropwizard-testing:$rootProject.dropwizardVersion"
     testCompile 'io.rest-assured:rest-assured:3.0.2'
