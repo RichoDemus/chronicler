@@ -26,6 +26,14 @@ buildscript {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['build/generated/source/proto/main/java', 'build/generated/source/proto/main/grpc']
+        }
+    }
+}
+
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:3.7.1"
