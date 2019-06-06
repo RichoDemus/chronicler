@@ -1,3 +1,4 @@
+package com.richodemus.chronicler.server.koin
 import com.richodemus.chronicler.persistence.DiskEventPersister
 import com.richodemus.chronicler.server.configuration.JavaPropertyConfiguration
 import com.richodemus.chronicler.server.core.Chronicle
@@ -14,24 +15,26 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.slf4j.LoggerFactory
 
-fun main() {
-    val module = module {
+object MyCoin {
+    val Module = module {
         eagerSingle { Chronicle(get(), get()) }
-        eagerSingle { Test() }
+        eagerSingle { Tezt() }
         eagerSingle { Dummy() as EventCreationListener }
         eagerSingle { DiskEventPersister(get()) as EventPersister }
         eagerSingle { JavaPropertyConfiguration() as Configuration }
     }
+}
 
+fun main() {
     startKoin {
         // use Koin logger
         logger(SLF4JLogger())
         // declare modules
-        modules(module)
+        modules(MyCoin.Module)
     }
 
 //    System.`in`.read()
-    val test = Test()
+    val test = Tezt()
 //    println(test.chronicle.persister)
 }
 
@@ -39,7 +42,7 @@ private inline fun <reified T> Module.eagerSingle(noinline definition: Definitio
     single(createdAtStart = true, definition = definition)
 }
 
-internal class Test : KoinComponent {
+class Tezt : KoinComponent {
     internal val chronicle: Chronicle by inject()
 
     init {

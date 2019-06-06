@@ -1,45 +1,12 @@
 dependencies {
-    compile project(":server:core")
+    compile project (':server:koin')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile 'org.slf4j:slf4j-api:1.7.26'
 
-    compile 'com.google.cloud:google-cloud-storage:1.76.0'
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9"
-}
-
-////
-apply plugin: 'kotlin'
-
-// analyzeTestClassesDependencies.enabled = false
-
-dependencies {
-    testCompile project (':server:dropwizard')
-    testCompile project (':server:swagger')
-
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
-    testCompile "io.dropwizard:dropwizard-testing:$rootProject.dropwizardVersion"
-    testCompile 'io.rest-assured:rest-assured:3.0.2'
-
-    testCompile "org.awaitility:awaitility:$rootProject.awaitilityVersion"
-    testCompile 'com.google.guava:guava:21.0'
-
-
-    testCompile "junit:junit:$rootProject.junitVersion"
-    testCompile "org.assertj:assertj-core:$rootProject.assertjVersion"
-}
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$rootProject.kotlinVersion"
-    }
+    compile 'org.koin:koin-test:2.0.1'
+    compile 'org.junit.jupiter:junit-jupiter:5.4.2'
 }
 
 sourceSets {
-    // Note that just declaring this sourceset creates two configurations.
     componentTest {
         kotlin {
             srcDir 'src/component-test/kotlin'
@@ -47,8 +14,11 @@ sourceSets {
         resources {
             srcDir 'src/component-test/resources'
         }
-        //compileClasspath += sourceSets.main.runtimeClasspath
     }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
 }
 
 configurations {

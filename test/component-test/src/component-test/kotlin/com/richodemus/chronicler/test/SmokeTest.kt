@@ -1,19 +1,32 @@
 package com.richodemus.chronicler.test
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
 
-internal class SmokeTest : DropwizardTest() {
+import com.richodemus.chronicler.server.koin.MyCoin
+import com.richodemus.chronicler.server.koin.Tezt
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
-    @Test
-    fun `Make sure server responds on http port`() {
-        val result = getClient().mainPage()
-        assertThat(result).isEqualTo(200)
+internal class SmokeTest {
+
+    @BeforeEach
+    internal fun setUp() {
+        startKoin {
+            MyCoin.Module
+        }
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        stopKoin()
     }
 
     @Test
-    fun `Make sure the swagger page is present`() {
-        val result = getClient().swaggerPage()
-        assertThat(result).containsIgnoringCase("swagger")
+    internal fun `simple smoke test`() {
+        val test = Tezt()
+        println(test)
+        println()
     }
 }
