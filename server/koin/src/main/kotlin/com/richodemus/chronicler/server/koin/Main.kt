@@ -34,7 +34,7 @@ fun main() {
     }
 
 //    System.`in`.read()
-    val test = Tezt()
+//    val test = Tezt()
 //    println(test.chronicle.persister)
 }
 

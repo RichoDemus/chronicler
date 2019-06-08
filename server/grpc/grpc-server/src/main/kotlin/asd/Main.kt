@@ -3,6 +3,7 @@ package asd
 import io.grpc.Server
 import io.grpc.ServerBuilder
 import io.grpc.examples.routeguide.*
+import io.grpc.protobuf.services.ProtoReflectionService
 import io.grpc.stub.StreamObserver
 
 fun main() {
@@ -21,6 +22,7 @@ class HelloWorldServer {
         val port = 50051
         server = ServerBuilder.forPort(port)
                 .addService(GreeterImpl())
+                .addService(ProtoReflectionService.newInstance())
                 .build()
                 .start()
 //        logger.log(Level.INFO, "Server started, listening on {0}", port)
