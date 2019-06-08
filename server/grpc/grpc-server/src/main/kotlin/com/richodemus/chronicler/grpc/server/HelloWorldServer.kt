@@ -1,4 +1,4 @@
-package asd
+package com.richodemus.chronicler.grpc.server
 
 import io.grpc.Server
 import io.grpc.ServerBuilder
@@ -6,18 +6,12 @@ import io.grpc.examples.routeguide.*
 import io.grpc.protobuf.services.ProtoReflectionService
 import io.grpc.stub.StreamObserver
 
-fun main() {
-//   io.grpc.ex
-    val asd = HelloRequest.newBuilder()
-
-
-}
-
 class HelloWorldServer {
 
     init {
         start()
     }
+
     private var server: Server? = null
 
     fun start() {
@@ -43,14 +37,6 @@ class HelloWorldServer {
         server?.shutdown()
     }
 
-    /**
-     * Await termination on the main thread since the grpc library uses daemon threads.
-     */
-    @Throws(InterruptedException::class)
-    private fun blockUntilShutdown() {
-        server?.awaitTermination()
-    }
-
     internal class GreeterImpl : GreeterGrpc.GreeterImplBase() {
 
         override fun sayHello(req: HelloRequest, responseObserver: StreamObserver<HelloReply>) {
@@ -60,18 +46,4 @@ class HelloWorldServer {
         }
     }
 
-    companion object {
-//        private val logger = Logger.getLogger(HelloWorldServer::class.java.name)
-
-        /**
-         * Main launches the server from the command line.
-         */
-//        @Throws(IOException::class, InterruptedException::class)
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val server = HelloWorldServer()
-            server.start()
-            server.blockUntilShutdown()
-        }
-    }
 }

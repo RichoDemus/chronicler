@@ -1,5 +1,6 @@
 package com.richodemus.chronicler.server.koin
-import asd.HelloWorldServer
+
+import com.richodemus.chronicler.grpc.server.HelloWorldServer
 import com.richodemus.chronicler.persistence.DiskEventPersister
 import com.richodemus.chronicler.server.configuration.JavaPropertyConfiguration
 import com.richodemus.chronicler.server.core.Chronicle
