@@ -15,9 +15,12 @@ fun main() {
 
 class HelloWorldServer {
 
+    init {
+        start()
+    }
     private var server: Server? = null
 
-    private fun start() {
+    fun start() {
         /* The port on which the server should run */
         val port = 50051
         server = ServerBuilder.forPort(port)
@@ -36,7 +39,7 @@ class HelloWorldServer {
         })
     }
 
-    private fun stop() {
+    fun stop() {
         server?.shutdown()
     }
 

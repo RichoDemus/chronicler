@@ -6,6 +6,12 @@ dependencies {
     compile 'io.grpc:grpc-stub:1.21.0'
     compile 'javax.annotation:javax.annotation-api:1.3.2'
 
+    // for some reason Intellij loads some old version of this jar without this
+    // make sure it's in sync with that grpc uses :/
+    compile 'io.opencensus:opencensus-api:0.21.0'
+
+
+
 
 //    compile 'org.slf4j:slf4j-api:1.7.26'
 //
@@ -36,7 +42,7 @@ sourceSets {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.8.0"
+        artifact = "com.google.protobuf:protoc:3.7.1"
     }
     plugins {
         grpc {

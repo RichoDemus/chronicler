@@ -1,6 +1,7 @@
 dependencies {
     compile project (':server:core')
     compile project (':server:persistence:filesystem')
+    compile project (':server:grpc:grpc-server')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     compile 'ch.qos.logback:logback-classic:1.2.3'

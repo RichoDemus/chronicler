@@ -39,17 +39,18 @@ package com.richodemus.chronicler.test
         }
 
         /** Say hello to server.  */
-        fun greet(name: String) {
+        fun greet(name: String): String? {
             logger.info("Will try to greet {}...", name)
             val request = HelloRequest.newBuilder().setName(name).build()
             val response: HelloReply =  try {
                 blockingStub.sayHello(request)
             } catch (e: StatusRuntimeException) {
                 logger.warn("RPC failed: {}", e.status)
-                return
+                return "faaailed: ${e.message}"
             }
 
             logger.info("Greeting: ${response.message}")
+            return response.message
         }
 
 //        companion object {

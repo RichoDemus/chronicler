@@ -1,4 +1,5 @@
 package com.richodemus.chronicler.server.koin
+import asd.HelloWorldServer
 import com.richodemus.chronicler.persistence.DiskEventPersister
 import com.richodemus.chronicler.server.configuration.JavaPropertyConfiguration
 import com.richodemus.chronicler.server.core.Chronicle
@@ -16,12 +17,14 @@ import org.koin.dsl.module
 import org.slf4j.LoggerFactory
 
 object MyCoin {
+    // todo split this into one module per gradle project so things can be internal again
     val Module = module {
         eagerSingle { Chronicle(get(), get()) }
         eagerSingle { Tezt() }
         eagerSingle { Dummy() as EventCreationListener }
         eagerSingle { DiskEventPersister(get()) as EventPersister }
         eagerSingle { JavaPropertyConfiguration() as Configuration }
+        eagerSingle { HelloWorldServer() }
     }
 }
 
